@@ -1,11 +1,12 @@
-const LandingPageLayout = ({ children }: { children: React.ReactNode }) => {
-    return (
-      <div className="flex flex-col container relative">
-     
-        {children}
-      </div>
-    )
-  }
+import LandingPageNavbar from "./_components/navbar"
 
-  export default LandingPageLayout
-  
+const LandingPageLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="flex flex-col container relative">
+      <LandingPageNavbar />
+      {children}
+    </div>
+  )
+}
+
+export default LandingPageLayout

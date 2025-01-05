@@ -1,13 +1,6 @@
-import { RefreshCcw } from "lucide-react"
-import {
-  Buisness,
-  Fitness,
-  LifeStyle,
-  Music,
-  PersonalDevelopment,
-  SocialMedia,
-  Tech,
-} from "../icons"
+import { Music, RefreshCcw } from "lucide-react"
+
+import { JSX } from "react"
 
 export type GroupListProps = {
   id: string
@@ -26,7 +19,7 @@ export const GROUP_LIST: GroupListProps[] = [
   {
     id: "1",
     label: "Fitness",
-    icon: <Fitness />,
+    icon: <RefreshCcw />,
     path: "fitness",
   },
   {
