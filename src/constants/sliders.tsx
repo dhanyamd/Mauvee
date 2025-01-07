@@ -1,4 +1,4 @@
-import { Music, RefreshCcw } from "lucide-react"
+/*import { Music, RefreshCcw } from "lucide-react"
 
 import { JSX } from "react"
 
@@ -58,4 +58,4 @@ export const GROUP_LIST: GroupListProps[] = [
     icon: <Tech />,
     path: "tech",
   },
-]
+]*/
