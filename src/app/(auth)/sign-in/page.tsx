@@ -4,6 +4,8 @@
 //import { Separator } from "@/components/ui/separator"
 
 import SignInForm from "@/components/forms/sign-in"
+import { GoogleAuthButton } from "@/components/google-oauth"
+import { Separator } from "@/components/ui/separator"
 
 const SignInPage = () => {
   return (
@@ -18,9 +20,9 @@ const SignInPage = () => {
         <div className="bg-black p-3 absolute text-themeTextGray text-xs top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           OR CONTINUE WITH
         </div>
-       {/* <Separator orientation="horizontal" className="bg-themeGray" />*/}
+        <Separator orientation="horizontal" className="bg-themeGray" />
       </div>
-     {/* <GoogleAuthButton method="signin" />*/}
+     <GoogleAuthButton method="signin" />
     </>
   )
 }

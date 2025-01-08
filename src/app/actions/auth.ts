@@ -31,3 +31,34 @@ export const onAuthenticatedUser = async () => {
         return {status : 404}
     }
 }
+
+export const onSignupUser = async(data : {
+    firstname : string,
+    lastname : string,
+    image : string,
+    clerkId : string
+}) => {
+  try{
+    const createdUser = await client.user.create({
+        data : {
+            ...data
+        }
+    })
+    if(createdUser){
+        return {
+            status : 200,
+            message : "User successfully created!",
+            id : createdUser.id
+        }
+    }
+    return {
+        status : 400,
+        message : "User couldn't be created! Try again"
+    }
+  }catch(error ){
+    return {
+        status : 400,
+        message : "Something went wrong! Try again"
+    }
+  }
+} 
