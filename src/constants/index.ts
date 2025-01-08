@@ -1,4 +1,5 @@
 
+import { AuthFormProps, SIGN_UP_FORM, SIGN_IN_FORM } from "./forms"
 import {
   GROUP_PAGE_MENU,
   GroupMenuProps,
@@ -9,18 +10,18 @@ import {
 
 type GroupleConstantsProps = {
   landingPageMenu: MenuProps[]
- /* signUpForm: AuthFormProps[]
+  signUpForm: AuthFormProps[]
   signInForm: AuthFormProps[]
-  groupList: GroupListProps[]
-  createGroupPlaceholder: CreateGroupPlaceholderProps[]
-  groupPageMenu: GroupMenuProps[]*/
+  //groupList: GroupListProps[]
+  //createGroupPlaceholder: CreateGroupPlaceholderProps[]
+  //groupPageMenu: GroupMenuProps[]*/
 }
 
 export const GROUPLE_CONSTANTS: GroupleConstantsProps = {
   landingPageMenu: LANDING_PAGE_MENU,
-  /*signUpForm: SIGN_UP_FORM,
+  signUpForm: SIGN_UP_FORM,
   signInForm: SIGN_IN_FORM,
-  groupList: GROUP_LIST,
-  createGroupPlaceholder: CREATE_GROUP_PLACEHOLDER,
-  groupPageMenu: GROUP_PAGE_MENU,*/
+  //groupList: GROUP_LIST,
+  //createGroupPlaceholder: CREATE_GROUP_PLACEHOLDER,
+  //groupPageMenu: GROUP_PAGE_MENU,*/
 }
