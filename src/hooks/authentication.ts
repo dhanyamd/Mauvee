@@ -148,7 +148,7 @@ export const useAuthSignUp = () => {
             await setActive({
               session: completeSignUp.createdSessionId,
             })
-            router.push(`/group/create`)
+            router.push('/group/create')
           }
           if (user.status !== 200) {
             toast("Error", {

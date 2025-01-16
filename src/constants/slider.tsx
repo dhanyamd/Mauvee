@@ -1,5 +1,4 @@
-/*import { Music, RefreshCcw } from "lucide-react"
-
+import { RefreshCcw } from "lucide-react"
 import { JSX } from "react"
 
 export type GroupListProps = {
@@ -25,37 +24,37 @@ export const GROUP_LIST: GroupListProps[] = [
   {
     id: "2",
     label: "Music",
-    icon: <Music />,
+    icon: <RefreshCcw />,
     path: "music",
   },
   {
     id: "3",
     label: "Buisness",
-    icon: <Buisness />,
+    icon: <RefreshCcw />,
     path: "buisness",
   },
   {
     id: "4",
     label: "Lifestyle",
-    icon: <LifeStyle />,
+    icon: <RefreshCcw />,
     path: "lifestyle",
   },
   {
     id: "5",
     label: "Personal Development",
-    icon: <PersonalDevelopment />,
+    icon: <RefreshCcw />,
     path: "personal-development",
   },
   {
     id: "6",
     label: "Social Media",
-    icon: <SocialMedia />,
+    icon: <RefreshCcw />,
     path: "social-media",
   },
   {
     id: "7",
     label: "Tech",
-    icon: <Tech />,
+    icon: <RefreshCcw />,
     path: "tech",
   },
-]*/
+]

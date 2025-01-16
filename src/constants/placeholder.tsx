@@ -44,9 +44,5 @@ import { WhiteLabel } from "@/icons/whitelabel"
       label: "Host unlimited courses",
       icon: <Courses />,
     },
-    {
-      id: "6",
-      label: "White-labeling options",
-      icon: <WhiteLabel />,
-    },
+  
   ]

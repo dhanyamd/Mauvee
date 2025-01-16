@@ -42,6 +42,18 @@ export const onSignupUser = async(data : {
     const createdUser = await client.user.create({
         data : {
             ...data
+        },
+        include : {
+                group: {
+                    select: {
+                      id : true,
+                      channel: {
+                        select: {
+                          id: true,
+                   }
+                },
+            }
+        }
         }
     })
     if(createdUser){

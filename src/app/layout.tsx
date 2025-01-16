@@ -1,6 +1,5 @@
 import { ThemeProvider } from "@/components/theme"
 import { ReactQueryProvider } from "@/react-query/provider"
-import { ReduxProvider } from "@/redux/provider"
 import { ClerkProvider } from "@clerk/nextjs"
 import type { Metadata } from "next"
 import { Plus_Jakarta_Sans } from "next/font/google"
@@ -28,9 +27,7 @@ function RootLayout({
             defaultTheme="dark"
             disableTransitionOnChange
           >
-            <ReduxProvider>
-              <ReactQueryProvider>{children}</ReactQueryProvider>
-            </ReduxProvider>
+              <ReactQueryProvider>{children}</ReactQueryProvider>    
             <Toaster />
           </ThemeProvider>
         </body>
