@@ -1,7 +1,7 @@
 import { onCreateNewGroup } from "@/app/actions/groups"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { CreateGroupSchema } from "./schema"
+import { CreateGroupSchema } from "../schema"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
