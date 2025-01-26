@@ -40,10 +40,7 @@ export const useGroup = async(
     
       const { mutateAsync: createGroup, isPending } = useMutation({
         mutationFn: async (data: z.infer<typeof CreateGroupSchema>) => {
-            await onCreateGroup(userId, data)
-        }
-    })
-    const onCreateGroup = handleSubmit(async (values) => createGroup(values))
+   // const onCreateGroup = handleSubmit(async (data) => createGroup(data))
     
     const router = useRouter()
     const created = await onCreateNewGroup(userId, data)
@@ -60,5 +57,16 @@ export const useGroup = async(
       return toast("Error", {
         description: created.message,
       })
-}
-}
+    }
+  }
+})
+const onCreateGroup = handleSubmit(async (values) => createGroup(values))
+
+return {
+  onCreateGroup,
+  isPending,
+  register,
+  errors,
+  isCategory,
+
+}}
