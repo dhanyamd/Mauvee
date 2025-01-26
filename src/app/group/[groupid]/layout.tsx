@@ -20,27 +20,27 @@ const GroupLayout = async({children, params} : Props) => {
     //group-info
    await query.prefetchQuery({
     queryKey : ["group-info"],
-    queryFn : () => onGetGroupInfo(params.groupid)
+    queryFn : () => onGetGroupInfo(params?.groupid)
    })
   
    await query.prefetchQuery({
     queryKey : ["user-groups"],
-    queryFn : () => onGetUserGroups(user.id)
+    queryFn : () => onGetUserGroups(user?.id)
    })
 
    await query.prefetchQuery({
     queryKey : ["group-channels"],
-    queryFn : () => onGetGroupChannels(params.groupid)
+    queryFn : () => onGetGroupChannels(params?.groupid)
    })
 
    await query.prefetchQuery({
     queryKey : ["group-subscriptions"],
-    queryFn : () => onGetGroupSubscriptions(params.groupid)
+    queryFn : () => onGetGroupSubscriptions(params?.groupid)
    })
  
    await query.prefetchQuery({
     queryKey : ["member-chats"],
-    queryFn : () => onGetAllGroupMembers(params.groupid)
+    queryFn : () => onGetAllGroupMembers(params?.groupid)
    })
 
  
