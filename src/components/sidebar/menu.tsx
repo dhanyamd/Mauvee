@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input"
 import { SIDEBAR_SETTINGS_MENU } from "@/constants/menus"
 import { useChannelInfo } from "@/hooks/channels"
 import { cn } from "@/lib/utils"
-import { Trash } from "lucide-react"
+import { BadgeMinus, MinusCircle, Trash } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { IChannels } from "."
@@ -117,6 +117,7 @@ const SideBarMenu = ({
                   <div className="flex gap-x-2 items-center">
                     {channel.id === current && edit ? (
                       <IconDropDown
+                      //@ts-ignore
                         ref={triggerRef}
                         page={currentPage}
                         onSetIcon={onSetIcon}
@@ -154,7 +155,7 @@ const SideBarMenu = ({
                   {channel.name !== "general" &&
                     channel.name !== "announcements" &&
                     userId === groupUserId && (
-                      <Trash
+                      <BadgeMinus
                         onClick={() => onChannelDetele(channel.id)}
                         className="group-hover:inline hidden content-end text-themeTextGray hover:text-gray-400"
                         size={16}

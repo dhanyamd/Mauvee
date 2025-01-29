@@ -102,7 +102,7 @@ const Sidebar = ({groupid, userid, mobile} : Props) => {
       )}
        <div className="flex flex-col gap-y-5">
         <div className="flex justify-between items-center">
-          <p className="text-xs text-[#F7ECE9]">CHANNELS</p>
+          <p className="text-md text-[#F7ECE9]">CHANNELS</p>
           {userid === groupInfo.group?.userId && (
             <Plus
               size={16}

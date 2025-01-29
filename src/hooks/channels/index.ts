@@ -54,6 +54,7 @@ import { toast } from "sonner"
   
     const onEndChannelEdit = (event: Event) => {
       if (inputRef.current && channelRef.current && triggerRef.current) {
+        //checks if click is done outside the ref! if so, it will update the channel name
         if (
           !inputRef.current.contains(event.target as Node | null) &&
           !channelRef.current.contains(event.target as Node | null) &&
