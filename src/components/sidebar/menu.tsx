@@ -135,12 +135,12 @@ const SideBarMenu = ({
                       <Input
                         type="text"
                         ref={inputRef}
-                        className="bg-transparent p-0 text-lg m-0 h-full"
+                        className="bg-transparent p-0 text-md m-0 h-full"
                       />
                     ) : (
                       <p
                         className={cn(
-                          "text-lg capitalize",
+                          "text-md capitalize",
                           currentPage === channel.id
                             ? "text-white"
                             : "text-themeTextGray",

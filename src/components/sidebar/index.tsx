@@ -10,6 +10,8 @@ import { Button } from '../ui/button'
 import { DropDown } from '../dropdown'
 import { v4 } from 'uuid'
 import SideBarMenu from './menu'
+import pfp from "@/icons/images.jpg"
+import { StaticImageData } from 'next/image'
 
 
 type Props = {
@@ -70,11 +72,12 @@ const Sidebar = ({groupid, userid, mobile} : Props) => {
             <div className="w-full flex items-center justify-between text-themeTextGray md:border-[1px] border-themeGray p-3 rounded-xl">
               <div className="flex gap-x-3 items-center">
                 <img
-                  src={`https://ucarecdn.com/${groupInfo.group?.icon as string}/`}
+                 src={(pfp as StaticImageData).src}
+                 //src={pfp}
                   alt="icon"
-                  className="w-10 rounded-lg"
+                  className="w-7 h-7 rounded-lg"
                 />
-                <p className="text-sm">{groupInfo.group?.name}</p>
+                <p className="text-sm font-semibold">{groupInfo.group?.name}</p>
               </div>
               <span className="">
                 <CarotSort />
@@ -102,7 +105,7 @@ const Sidebar = ({groupid, userid, mobile} : Props) => {
       )}
        <div className="flex flex-col gap-y-5">
         <div className="flex justify-between items-center">
-          <p className="text-md text-[#F7ECE9]">CHANNELS</p>
+          <p className="text-md font-bold text-[#F7ECE9]"> CHANNELS </p>
           {userid === groupInfo.group?.userId && (
             <Plus
               size={16}

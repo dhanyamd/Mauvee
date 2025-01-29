@@ -1,5 +1,6 @@
 import GlassSheet from "@/app/globals/glass-sheet"
 import Search from "@/app/globals/search"
+import UserWidget from "@/app/globals/user-widget"
 import Sidebar from "@/components/sidebar"
 import { Button } from "@/components/ui/button"
 import { CheckBadge } from "@/icons/f"
@@ -33,6 +34,7 @@ export const Navbar = async({groupid, userid} : NavbarProps) => {
           Create Group
         </Button>
       </Link>
+      <UserWidget userid={userid} image={user?.imageUrl!} groupid={groupid}/>
         </div>
     )
 }
