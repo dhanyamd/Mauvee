@@ -1,12 +1,14 @@
 "use client"
 import { Input } from "@/components/ui/input"
 import { SIDEBAR_SETTINGS_MENU } from "@/constants/menus"
+import { useChannelInfo } from "@/hooks/channels"
 import { cn } from "@/lib/utils"
 import { Trash } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { IChannels } from "."
 import { IconRenderer } from "../icon-renderer"
+import IconDropDown from "./icon-dropdown"
 
 type Props = {
   channels: IChannels[]
@@ -114,11 +116,14 @@ const SideBarMenu = ({
                 >
                   <div className="flex gap-x-2 items-center">
                     {channel.id === current && edit ? (
-                        //change this with before what was there
-                      <IconRenderer
-                      icon={channel.icon}
-                      mode={currentPage === channel.id ? "LIGHT" : "DARK"}
-                    />
+                      <IconDropDown
+                        ref={triggerRef}
+                        page={currentPage}
+                        onSetIcon={onSetIcon}
+                        channelid={channel.id}
+                        icon={channel.icon}
+                        currentIcon={icon}
+                      />
                     ) : (
                       <IconRenderer
                         icon={channel.icon}

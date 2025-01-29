@@ -9,6 +9,7 @@ import React from 'react'
 import { Button } from '../ui/button'
 import { DropDown } from '../dropdown'
 import { v4 } from 'uuid'
+import SideBarMenu from './menu'
 
 
 type Props = {
@@ -122,7 +123,14 @@ const Sidebar = ({groupid, userid, mobile} : Props) => {
             />
           )}
         </div>
-
+        <SideBarMenu
+          channels={channels?.channels!}
+          optimisticChannel={variables}
+          loading={isPending}
+          groupid={groupid}
+          groupUserId={groupInfo.group?.userId!}
+          userId={userid}
+        />
     </div>
     </div>
   )
