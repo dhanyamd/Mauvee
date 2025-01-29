@@ -3,7 +3,7 @@ import { onGetGroupChannels } from "@/app/actions/groups";
 import { IGroupInfo, IGroups } from "@/components/sidebar";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname } from "next/navigation"
-import { use, useState } from "react";
+import {  useState } from "react";
 import { toast } from "sonner";
 
 export const useNavigation = () => {

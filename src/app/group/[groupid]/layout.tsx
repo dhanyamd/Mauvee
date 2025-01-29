@@ -1,5 +1,6 @@
 import { onAuthenticatedUser } from '@/app/actions/auth'
 import { onGetAllGroupMembers, onGetGroupChannels, onGetGroupInfo, onGetGroupSubscriptions, onGetUserGroups } from '@/app/actions/groups'
+import Sidebar from '@/components/sidebar'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
 import { redirect } from 'next/navigation'
 import React from 'react'
@@ -15,7 +16,7 @@ const GroupLayout = async({children, params} : Props) => {
     const query = new QueryClient()
 
     const user = await onAuthenticatedUser()
-    if(!user.id) return redirect('/sign-in')
+    if(!user?.id) return redirect('/sign-in')
 
     //group-info
    await query.prefetchQuery({
@@ -46,7 +47,10 @@ const GroupLayout = async({children, params} : Props) => {
  
   return (
     <HydrationBoundary state={dehydrate(query)}> 
-        <div className='flex h-screen md:pt-5'></div>
+        <div className='flex h-screen md:pt-5'>
+            <Sidebar groupid={params?.groupid} userid={user?.id} />
+            {children}
+        </div>
     </HydrationBoundary>
   )
 }
