@@ -1,8 +1,8 @@
 import { supabaseClient } from "@/lib/utils"
+import { onOnline } from "@/redux/slices/online-member-slice"
 import { AppDispatch } from "@/redux/store"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
-import { onOnline } from "@/redux/slices/online-member-slice"
 
 export const useGroupChatOnline = (userid: string) => {
     const dispatch: AppDispatch = useDispatch()
