@@ -1,13 +1,18 @@
 'use client'
-import { onSearchGroups } from "@/app/actions/groups"
+import { onGetGroupInfo, onSearchGroups } from "@/app/actions/groups"
 import { supabaseClient } from "@/lib/utils"
 import { onOnline } from "@/redux/slices/online-member-slice"
 import { onClearSearch, onSearch } from "@/redux/slices/search-slice"
 import { AppDispatch } from "@/redux/store"
-import { useQuery } from "@tanstack/react-query"
-import React, { useEffect, useState } from "react"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import React, { use, useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
-
+import {JSONContent} from "novel"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { set, z } from "zod"
+import { GroupSettingsSchema } from "@/components/forms/group-setttings/schema"
+import { toast } from "sonner"
 export const useGroupChatOnline = (userid: string) => {
     const dispatch: AppDispatch = useDispatch()
   
@@ -91,4 +96,74 @@ export const useGroupChatOnline = (userid: string) => {
         },[debounce])
       
    return {onSearchQuery, query} 
+  }
+
+  export const useGroupSettings = (groupid : string) => {
+    const {data} = useQuery({
+      queryKey: ["group-info"],
+      queryFn : () => onGetGroupInfo(groupid)
+    })
+    const jsonContent = data?.group?.jsonDescription !== null 
+    ? JSON.parse(data?.group?.jsonDescription as string ) : undefined
+
+    const [onJsonDescription, setJsonDescription] = useState<JSONContent | undefined>(jsonContent)
+    const [onDescription, setDescription] = useState<string | undefined>(data?.group?.description || undefined)
+    
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+      reset,
+      watch,
+      setValue
+    } = useForm<z.infer<typeof GroupSettingsSchema>>({
+      resolver : zodResolver(GroupSettingsSchema),
+      mode : "onChange",
+    })
+    const [previewIcon, setPreviewIcon] = useState<string | undefined>(undefined)
+    const [previewThumbnail, setPreviewThumbnail] = useState<string | undefined>(undefined)
+
+    useEffect(() => {
+      const previews = watch(({thumbnail, icon}) => {
+        if(icon[0]){
+          setPreviewIcon(URL.createObjectURL(icon[0]))
+        }
+        if(thumbnail[0]){
+          setPreviewThumbnail(URL.createObjectURL(thumbnail[0]))
+        }
+      })
+      return () => previews.unsubscribe()
+    },[watch])
+
+    const onSetDescriptions = () => {
+      const JsonContent = JSON.stringify(onJsonDescription)
+      setValue("jsondescription", JsonContent)
+      setValue("description", onDescription)
+    }
+   useEffect(() => {
+    onSetDescriptions()
+    return () => {
+      onSetDescriptions()
+    }
+   },[onJsonDescription, onDescription])
+
+   const {mutate: update, isPending} = useMutation({
+    mutationKey: ["group-settings"],
+    mutationFn : async(values : z.infer<typeof GroupSettingsSchema>) => {
+      if(values.thumbnail && values.thumbnail.length  > 0){
+        const uploaded = await upload.uploadFile(values.thumbnail[0])
+        const updated = await onUpDateGroupSettings(
+          groupid,
+          "IMAGE",
+          uploaded.uuid,
+          `/group/${groupid}/settings`
+        )
+        if(updated.status !== 200){
+          return toast("Error", {
+            description: "OOps! looks like your form is empty "
+          })
+        }
+      }
+    }
+   })
   }

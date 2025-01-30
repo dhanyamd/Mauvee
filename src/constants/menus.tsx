@@ -13,6 +13,10 @@
     ZapDouToneBlack,
   } from "@icons"*/
 import { AffiliateDuoToneBlack } from "@/icons/affiliate-duo-blacktone"
+import { CreditCard } from "@/icons/credit-card"
+import { GlobeDuoToneBlack } from "@/icons/globe-duotone"
+import { IDuotoneBlack } from "@/icons/iduotone"
+import { ZapDouToneBlack } from "@/icons/zapduotone"
 import { JSX } from "react"
   
   export type MenuProps = {
@@ -98,13 +102,13 @@ import { JSX } from "react"
     {
       id: 0,
       label: "General",
-      icon: <AffiliateDuoToneBlack />,
+      icon: <IDuotoneBlack />,
       path: "",
     },
     {
       id: 1,
       label: "Subscriptions",
-      icon: <AffiliateDuoToneBlack />,
+      icon: <CreditCard />,
       path: "subscriptions",
     },
     {
@@ -116,13 +120,13 @@ import { JSX } from "react"
     {
       id: 3,
       label: "Domain Config",
-      icon: <AffiliateDuoToneBlack />,
+      icon: <GlobeDuoToneBlack />,
       path: "domains",
     },
     {
       id: 4,
       label: "Integration",
-      icon: <AffiliateDuoToneBlack />,
+      icon: <ZapDouToneBlack />,
       path: "integrations",
       integration: true,
     },
