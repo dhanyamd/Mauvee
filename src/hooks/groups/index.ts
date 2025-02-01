@@ -127,10 +127,11 @@ export const useGroupChatOnline = (userid: string) => {
 
     useEffect(() => {
       const previews = watch(({thumbnail, icon}) => {
-        if(icon){
+        if(!icon) return 
+        if(icon[0]){
           setPreviewIcon(URL.createObjectURL(icon[0]))
         }
-        if(thumbnail){
+        if(thumbnail[0]){
           setPreviewThumbnail(URL.createObjectURL(thumbnail[0]))
         }
       })

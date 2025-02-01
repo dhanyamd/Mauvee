@@ -71,12 +71,17 @@ const Sidebar = ({groupid, userid, mobile} : Props) => {
           trigger={
             <div className="w-full flex items-center justify-between text-themeTextGray md:border-[1px] border-themeGray p-3 rounded-xl">
               <div className="flex gap-x-3 items-center">
-                <img
+               <img
                  src={(pfp as StaticImageData).src}
                  //src={pfp}
                   alt="icon"
                   className="w-7 h-7 rounded-lg"
                 />
+                {/* <img
+                  src={`https://ucarecdn.com/${groupInfo.group?.icon as string}/` || pfp.src}
+                  alt="icon"
+                  className="w-10 rounded-lg"
+                />*/}
                 <p className="text-sm font-semibold">{groupInfo.group?.name}</p>
               </div>
               <span className="">
