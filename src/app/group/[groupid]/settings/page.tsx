@@ -1,3 +1,4 @@
+import GroupSettingsForm from '@/components/forms/group-setttings'
 import React from 'react'
 
 const SettingsPage = ({params} : {params : {groupid : string}}) => {
@@ -11,6 +12,7 @@ const SettingsPage = ({params} : {params : {groupid : string}}) => {
              reflect on the explore page!
          </p>
         </div>
+        <GroupSettingsForm groupid={params.groupid} />
     </div>
   )
 }

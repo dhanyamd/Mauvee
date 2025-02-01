@@ -4,6 +4,7 @@ import { client } from "@/lib/prisma"
 import { v4 as uuidv4 } from "uuid"
 import { z } from "zod"
 import { onAuthenticatedUser } from "./auth"
+import { revalidatePath } from "next/cache"
 
 export const onGetAffiliateInfo = async(id : string) => {
     try {
@@ -287,9 +288,91 @@ try{
     }
   }
   if(mode === "POSTS"){
-    
+
   }
 }catch(error){
   return {status : 400}
 }
+}
+
+export const onUpDateGroupSettings = async (
+  groupid : string,
+  type : 
+  | "IMAGE"
+  | "ICON"
+  | "NAME"
+  | "DESCRIPTION"
+  | "JSONDESCRIPTION"
+  | "HTMLDESCRIPTION",
+  content : string,
+  path : string
+) => {
+  try{
+   if(type === "IMAGE"){
+     const updated = await client.group.update({
+       where : {
+         id : groupid
+       },
+       data : {
+         thumbnail : content
+       }
+     })
+   }
+   if(type === "ICON"){
+    const updated = await client.group.update({
+      where : {
+        id : groupid
+      },
+      data : {
+        icon : content
+      }
+    })
+   }
+   if(type === "DESCRIPTION"){
+    const updated = await client.group.update({
+      where : {
+        id : groupid
+      },
+      data : {
+        description : content
+      }
+    })
+   }
+   if(type === "JSONDESCRIPTION"){
+    const updated = await client.group.update({
+      where : {
+        id : groupid
+      },
+      data : {
+        jsonDescription : content
+      }
+    })
+   }
+   if(type === "HTMLDESCRIPTION"){
+    const updated = await client.group.update({
+      where : {
+        id : groupid
+      },
+      data : {
+        htmlDescription : content
+      }
+    })
+   }
+
+   if(type === "NAME"){
+    const updated = await client.group.update({
+      where : {
+        id : groupid
+      },
+      data : {
+        name : content
+      }
+    })
+   }
+   revalidatePath(path)
+   return {status : 200}
+
+  }catch(error){
+    return {status : 400}
+  }
 }

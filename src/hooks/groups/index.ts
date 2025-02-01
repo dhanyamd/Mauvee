@@ -1,11 +1,11 @@
 'use client'
-import { onGetGroupInfo, onSearchGroups } from "@/app/actions/groups"
+import { onGetGroupInfo, onSearchGroups, onUpDateGroupSettings } from "@/app/actions/groups"
 import { supabaseClient } from "@/lib/utils"
 import { onOnline } from "@/redux/slices/online-member-slice"
 import { onClearSearch, onSearch } from "@/redux/slices/search-slice"
 import { AppDispatch } from "@/redux/store"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import React, { use, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import {JSONContent} from "novel"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -13,6 +13,8 @@ import { useForm } from "react-hook-form"
 import { set, z } from "zod"
 import { GroupSettingsSchema } from "@/components/forms/group-setttings/schema"
 import { toast } from "sonner"
+import { upload } from "@/lib/uploadcare"
+import { useRouter } from "next/navigation"
 export const useGroupChatOnline = (userid: string) => {
     const dispatch: AppDispatch = useDispatch()
   
@@ -125,10 +127,10 @@ export const useGroupChatOnline = (userid: string) => {
 
     useEffect(() => {
       const previews = watch(({thumbnail, icon}) => {
-        if(icon[0]){
+        if(icon){
           setPreviewIcon(URL.createObjectURL(icon[0]))
         }
-        if(thumbnail[0]){
+        if(thumbnail){
           setPreviewThumbnail(URL.createObjectURL(thumbnail[0]))
         }
       })
@@ -158,12 +160,100 @@ export const useGroupChatOnline = (userid: string) => {
           uploaded.uuid,
           `/group/${groupid}/settings`
         )
-        if(updated.status !== 200){
+        if(updated?.status !== 200){
           return toast("Error", {
             description: "OOps! looks like your form is empty "
           })
         }
       }
-    }
-   })
+      if (values.icon && values.icon.length > 0) {
+        console.log("icon")
+        const uploaded = await upload.uploadFile(values.icon[0])
+        const updated = await onUpDateGroupSettings(
+          groupid,
+          "ICON",
+          uploaded.uuid,
+          `/group/${groupid}/settings`,
+        )
+        if (updated.status !== 200) {
+          return toast("Error", {
+            description: "Oops! looks like your form is empty",
+          })
+        }
+      }
+      if (values.name) {
+        const updated = await onUpDateGroupSettings(
+          groupid,
+          "NAME",
+          values.name,
+          `/group/${groupid}/settings`,
+        )
+        if (updated.status !== 200) {
+          return toast("Error", {
+            description: "Oops! looks like your form is empty",
+          })
+        }
+      }
+      console.log("DESCRIPTION")
+
+      if (values.description) {
+        const updated = await onUpDateGroupSettings(
+          groupid,
+          "DESCRIPTION",
+          values.description,
+          `/group/${groupid}/settings`,
+        )
+        if (updated.status !== 200) {
+          return toast("Error", {
+            description: "Oops! looks like your form is empty",
+          })
+        }
+      }
+      if (values.jsondescription) {
+        const updated = await onUpDateGroupSettings(
+          groupid,
+          "JSONDESCRIPTION",
+          values.jsondescription,
+          `/group/${groupid}/settings`,
+        )
+        if (updated.status !== 200) {
+          return toast("Error", {
+            description: "Oops! looks like your form is empty",
+          })
+        }
+      }
+      if (
+        !values.description &&
+        !values.name &&
+        !values.thumbnail.length &&
+        !values.icon.length &&
+        !values.jsondescription
+      ) {
+        return toast("Error", {
+          description: "Oops! looks like your form is empty",
+        })
+      }
+      return toast("Success", {
+        description: "Group data updated",
+      })
+    },
+  })
+  const router = useRouter()
+  const onUpdate = handleSubmit(async (values) => update(values))
+  if (data?.status !== 200) router.push(`/group/create`)
+
+  return {
+    data,
+    register,
+    errors,
+    onUpdate,
+    isPending,
+    previewIcon,
+    previewThumbnail,
+    onJsonDescription,
+    setJsonDescription,
+    setDescription,
+    onDescription,
+  }
+
   }
