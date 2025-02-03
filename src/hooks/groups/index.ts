@@ -105,7 +105,7 @@ export const useGroupChatOnline = (userid: string) => {
       queryKey: ["group-info"],
       queryFn : () => onGetGroupInfo(groupid)
     })
-    const jsonContent = data?.group?.jsonDescription !== null 
+    const jsonContent = data?.group?.jsonDescription 
     ? JSON.parse(data?.group?.jsonDescription as string ) : undefined
 
     const [onJsonDescription, setJsonDescription] = useState<JSONContent | undefined>(jsonContent)
