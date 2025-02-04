@@ -1,6 +1,9 @@
 'use client'
 import GroupCard from '@/app/(discover)/explore/_components/group-card'
+import BlockTextEditor from '@/app/globals/rich-text-editor'
 import { FormGenerator } from '@/components/form-generator'
+import { Loader } from '@/components/loader'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useGroupSettings } from '@/hooks/groups'
@@ -25,7 +28,7 @@ const GroupSettingsForm = ({groupid} : Props) => {
      setJsonDescription
     } = useGroupSettings(groupid)
   return (
-    <div className='flex flex-col w-full h-full gap-y-5 items-start' onSubmit={onUpdate}>
+    <form className='flex flex-col w-full h-full gap-y-5 items-start' onSubmit={onUpdate}>
      <div className='flex 2xl:flex-row flex-col gap-10'>
         <div className='flex flex-col gap-3 items-start'>
             <p>Group Preview</p>
@@ -90,8 +93,25 @@ const GroupSettingsForm = ({groupid} : Props) => {
           inputType="input"
           type="text"
         />
+        <Label className='flex flex-col gap-y-2'>
+         <p>Group Description</p>
+         <BlockTextEditor 
+         errors={errors}
+         name='jsondescription'
+         min={150}
+         max={10000}
+         textContent={onDescription}
+         content={onJsonDescription}
+         setContent={setJsonDescription}
+         //@ts-ignore
+         setTextContent={setJsonDescription}
+         />
+        </Label>
+        <Button className="self-start" type="submit">
+          <Loader loading={isPending}>Update Settings</Loader>
+        </Button>
         </div>
-    </div>
+    </form>
   )
 }
 

@@ -15,11 +15,13 @@ import { CharacterCount, handleCommandNavigation } from "novel/extensions"
 import { useState } from "react"
 import { FieldErrors } from "react-hook-form"
 import { HtmlParser } from "../html-parser"
-import { suggestionItems } from "./slash-command"
+import { slashCommand, suggestionItems } from "./slash-command"
 import { LinkSelector } from "./link-selector"
 import { TextButtons } from "./text-selector"
 import { ColorSelector } from "./color-selector"
 import NodeSelector from "./node-selector"
+import { defaultExtensions } from "./extensions"
+import { Video } from "./video"
 
 
 type Props = {
@@ -84,21 +86,21 @@ const BlockTextEditor = ({
               },
             }}
             extensions={[
-              // @ts-ignore
+              //@ts-ignore
               ...defaultExtensions,
-              // @ts-ignore
+              //@ts-ignore
               slashCommand,
-              // @ts-ignore
+           //@ts-ignore
               CharacterCount.configure({
                 limit: max,
               }),
-              // @ts-ignore
+              //@ts-ignore
               Placeholder.configure({
                 placeholder: "Type / to insert element...",
               }),
-              // @ts-ignore
+             //@ts-ignore
               Video,
-              // @ts-ignore
+              //@ts-ignore
               Image,
             ]}
             onUpdate={({ editor }) => {
