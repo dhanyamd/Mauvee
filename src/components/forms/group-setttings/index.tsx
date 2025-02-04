@@ -24,7 +24,7 @@ const GroupSettingsForm = ({groupid} : Props) => {
      previewIcon,
      previewThumbnail,
      register,
-     setDescription,
+     setOnDescription,
      setJsonDescription
     } = useGroupSettings(groupid)
   return (
@@ -95,21 +95,22 @@ const GroupSettingsForm = ({groupid} : Props) => {
         />
         <Label className='flex flex-col gap-y-2'>
          <p>Group Description</p>
-         <BlockTextEditor 
-         errors={errors}
-         name='jsondescription'
-         min={150}
-         max={10000}
-         textContent={onDescription}
-         content={onJsonDescription}
-         setContent={setJsonDescription}
-         //@ts-ignore
-         setTextContent={setJsonDescription}
-         />
+         <BlockTextEditor
+            errors={errors}
+            name="jsondescription"
+            min={15}
+            max={10000}
+            textContent={onDescription}
+            content={onJsonDescription}
+            setContent={setJsonDescription}
+            setTextContent={setOnDescription}
+            />
         </Label>
-        <Button className="self-start" type="submit">
+        <Button className="self-start pb-3" type="submit">
           <Loader loading={isPending}>Update Settings</Loader>
         </Button>
+        </div>
+        <div className='pt-3'> {" "}
         </div>
     </form>
   )

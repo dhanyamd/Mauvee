@@ -47,7 +47,7 @@
     "@stripe/stripe-js": "^4.3.0",
     "@supabase/supabase-js": "^2.48.1",
     "@tanstack/react-query": "^5.51.24",
-    "@tiptap/core": "^2.6.6",
+    "@tiptap/core": "^2.11.5",
     "@types/uuid": "^10.0.0",
     "@uploadcare/react-uploader": "^1.4.0",
     "@uploadcare/upload-client": "^6.14.2",

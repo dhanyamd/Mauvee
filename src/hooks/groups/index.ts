@@ -108,8 +108,14 @@ export const useGroupChatOnline = (userid: string) => {
     const jsonContent = data?.group?.jsonDescription 
     ? JSON.parse(data?.group?.jsonDescription as string ) : undefined
 
-    const [onJsonDescription, setJsonDescription] = useState<JSONContent | undefined>(jsonContent)
-    const [onDescription, setDescription] = useState<string | undefined>(data?.group?.description || undefined)
+   
+  const [onJsonDescription, setJsonDescription] = useState<
+  JSONContent | undefined
+>(jsonContent)
+
+const [onDescription, setOnDescription] = useState<string | undefined>(
+  data?.group?.description || undefined,
+)
     
     const {
       register,
@@ -253,7 +259,7 @@ export const useGroupChatOnline = (userid: string) => {
     previewThumbnail,
     onJsonDescription,
     setJsonDescription,
-    setDescription,
+    setOnDescription,
     onDescription,
   }
 
