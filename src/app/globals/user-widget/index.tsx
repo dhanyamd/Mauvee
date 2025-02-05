@@ -6,7 +6,7 @@ import { Notification } from './notification'
 
 type UserWidgetProps = {
     image : string
-    groupid : string 
+    groupid? : string 
     userid? : string
 }
 

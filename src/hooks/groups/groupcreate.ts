@@ -10,8 +10,7 @@ import { useMutation } from "@tanstack/react-query"
 
 export const useGroup = async(
     userId: string,
- affiliate: boolean,
-  stripeId?: string,
+
 ) => {
 
     const [isCategory, setIsCategory] = useState<string | undefined>(undefined)
