@@ -3,7 +3,7 @@ import InfiteScrollBar from "@/app/globals/infinite-scroll"
 import GroupCard from "./group-card"
 import PaginatedGroups from "./paginated-comp"
 import { NoResult } from "@/app/globals/search/no-result"
-import { useGroupList } from "@/app/actions/groups"
+import { useGroupList } from "@/hooks/groups"
 
 type Props = {
   category: string

@@ -1,10 +1,10 @@
-import { useExploreSlider, useGroupList } from '@/app/actions/groups'
 import { Slider } from '@/components/slider'
 import { useAppSelector } from '@/redux/store'
 import React from 'react'
 import { SwiperSlide } from 'swiper/react'
 import GroupCard from './group-card'
 import Skeleton from '@/app/globals/skeleton'
+import { useExploreSlider, useGroupList } from '@/hooks/groups'
 
 type Props = {
     query : string

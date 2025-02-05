@@ -383,24 +383,6 @@ export const onUpDateGroupSettings = async (
   }
 }
 
-export const useGroupList = (query: string) => {
-  const { data } = useQuery({
-    queryKey: [query],
-  })
-
-  const dispatch: AppDispatch = useDispatch()
-
-  useLayoutEffect(() => {
-    dispatch(onClearList({ data: [] }))
-  }, [])
-
-  const { groups, status } = data as {
-    groups: GroupStateProps[]
-    status: number
-  }
-
-  return { groups, status }
-}
 
 export const onGetExploreGroup = async(category : string, paginate : number) => {
   try{
@@ -485,23 +467,3 @@ export const onGetPaginatedPosts = async(
   }
 }
 
-export const useExploreSlider = (query: string, paginate: number) => {
-  const [onLoadSlider, setOnLoadSlider] = useState<boolean>(false)
-  const dispatch: AppDispatch = useDispatch()
-  const {data, refetch, isFetched, isFetching} = useQuery({
-    queryKey : ["fetch-group-slides"],
-    queryFn: () => onGetExploreGroup(query, paginate|0),
-    enabled : false
-  })
-  if(isFetched && data?.status === 200 && data.groups){
-    dispatch(onInfiniteScroll({data: data.groups}))
-  }
-  useEffect(() => {
-    setOnLoadSlider(true)
-    return () => {
-      onLoadSlider
-    }
-  },[])
-
-  return {refetch, isFetched, data, onLoadSlider, isFetching}
-  }
