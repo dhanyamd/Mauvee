@@ -403,7 +403,7 @@ export const onGetExploreGroup = async(category : string, paginate : number) => 
       groups
     }
    }
-
+   
    return {status : 400, message : "No groups found in this category!"}
   }catch(error){
     return {
