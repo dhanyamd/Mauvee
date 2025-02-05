@@ -5,6 +5,12 @@ import { v4 as uuidv4 } from "uuid"
 import { z } from "zod"
 import { onAuthenticatedUser } from "./auth"
 import { revalidatePath } from "next/cache"
+import { useQuery } from "@tanstack/react-query"
+import { AppDispatch } from "@/redux/store"
+import { useDispatch } from "react-redux"
+import { useLayoutEffect } from "react"
+import { onClearList } from "@/redux/slices/infinite-scroll-slice"
+import { GroupStateProps } from "@/redux/slices/search-slice"
 
 export const onGetAffiliateInfo = async(id : string) => {
     try {
@@ -373,6 +379,108 @@ export const onUpDateGroupSettings = async (
    return {status : 200}
 
   }catch(error){
+    return {status : 400}
+  }
+}
+
+export const useGroupList = (query: string) => {
+  const { data } = useQuery({
+    queryKey: [query],
+  })
+
+  const dispatch: AppDispatch = useDispatch()
+
+  useLayoutEffect(() => {
+    dispatch(onClearList({ data: [] }))
+  }, [])
+
+  const { groups, status } = data as {
+    groups: GroupStateProps[]
+    status: number
+  }
+
+  return { groups, status }
+}
+
+export const onGetExploreGroup = async(category : string, paginate : number) => {
+  try{
+   const groups = await client.group.findMany({
+    where : {
+      category,
+      NOT : {
+        description : null,
+        thumbnail : null 
+      }
+    },
+    take : 6,
+    skip : paginate 
+   })
+   if(groups && groups.length > 0){
+    return {
+      status : 200,
+      groups
+    }
+   }
+
+   return {status : 400, message : "No groups found in this category!"}
+  }catch(error){
+    return {
+      status : 400,
+      message : "Something went wrong!"
+    }
+  }
+}
+
+export const onGetPaginatedPosts = async(
+  identifier: string,
+  paginate: number
+) => {
+  try {
+    const user = await onAuthenticatedUser()
+    const posts = await client.post.findMany({
+      where : {
+        channelId : identifier
+      },
+      skip : paginate,
+      take : 2,
+       orderBy : {
+        createdAt : "desc"
+       },
+       include : {
+        channel: {
+          select : {
+            name : true
+          }
+        },
+        author: {
+          select : {
+            firstname : true,
+            lastname:true,
+            image: true
+          }
+        },
+        _count: {
+          select : {
+            likes : true,
+            comments : true
+          }
+        },
+        likes : {
+          where : {
+            userId: user.id
+          },
+          select : {
+            userId: true,
+            id : true
+          }
+        }
+       }
+    })
+    if(posts && posts.length > 0){
+      return {status : 200, posts}
+    }
+    return {status : 400, message : "OnGetPaginated posts gone wrong"}
+  } catch (error) {
     return {status : 400}
   }
 }

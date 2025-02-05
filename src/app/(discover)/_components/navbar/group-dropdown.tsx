@@ -45,7 +45,7 @@ export const GroupDropDown = ({ groups, members }: GroupDropDownProps) => {
       trigger={
         <Button
           variant="ghost"
-          className="rounded-2xl hover:bg-themeGray font-medium flex gap-2"
+          className="rounded-2xl hover:bg-themeGray font-medium text-2xl flex gap-2"
         >
           Mauvee
           <CarotSort />

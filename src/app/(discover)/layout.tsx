@@ -8,7 +8,7 @@ type Props = {
 const DiscoverLyout = ({children} : Props) => {
   return (
     <div className='flex flex-col min-h-screen bg-black pb-10'>
-    <Navbar/>
+    <Navbar />
     {children}
     </div>
   )
