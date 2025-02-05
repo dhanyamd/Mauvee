@@ -8,8 +8,8 @@ import { revalidatePath } from "next/cache"
 import { useQuery } from "@tanstack/react-query"
 import { AppDispatch } from "@/redux/store"
 import { useDispatch } from "react-redux"
-import { useLayoutEffect } from "react"
-import { onClearList } from "@/redux/slices/infinite-scroll-slice"
+import { useEffect, useLayoutEffect, useState } from "react"
+import { onClearList, onInfiniteScroll } from "@/redux/slices/infinite-scroll-slice"
 import { GroupStateProps } from "@/redux/slices/search-slice"
 
 export const onGetAffiliateInfo = async(id : string) => {
@@ -484,3 +484,24 @@ export const onGetPaginatedPosts = async(
     return {status : 400}
   }
 }
+
+export const useExploreSlider = (query: string, paginate: number) => {
+  const [onLoadSlider, setOnLoadSlider] = useState<boolean>(false)
+  const dispatch: AppDispatch = useDispatch()
+  const {data, refetch, isFetched, isFetching} = useQuery({
+    queryKey : ["fetch-group-slides"],
+    queryFn: () => onGetExploreGroup(query, paginate|0),
+    enabled : false
+  })
+  if(isFetched && data?.status === 200 && data.groups){
+    dispatch(onInfiniteScroll({data: data.groups}))
+  }
+  useEffect(() => {
+    setOnLoadSlider(true)
+    return () => {
+      onLoadSlider
+    }
+  },[])
+
+  return {refetch, isFetched, data, onLoadSlider, isFetching}
+  }

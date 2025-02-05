@@ -3,6 +3,7 @@
 import { useAppSelector } from "@/redux/store"
 import dynamic from "next/dynamic"
 import GroupList from "./group-list"
+import ExploreSlider from "./explore-slider"
 
 
 type Props = {
