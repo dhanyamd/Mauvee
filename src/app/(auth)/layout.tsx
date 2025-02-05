@@ -9,8 +9,8 @@ type Props = {
 }
 
 const AuthLayout = async({children} : Props) => {
-   const user = await onAuthenticatedUser();
-   //if(user.status !== 200) redirect('/sign-in') 
+   const user = await onAuthenticatedUser()
+ //  if(user.status !== 200) redirect('/sign-in') 
   return (
     <div className="container h-screen flex justify-center items-center">
       <div className="flex flex-col w-full items-center py-24">

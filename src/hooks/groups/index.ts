@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import { onGetExploreGroup, onGetGroupInfo, onSearchGroups, onUpDateGroupSettings } from "@/app/actions/groups"
 import { supabaseClient } from "@/lib/utils"
 import { onOnline } from "@/redux/slices/online-member-slice"
@@ -211,6 +211,7 @@ const [onDescription, setOnDescription] = useState<string | undefined>(
           values.description,
           `/group/${groupid}/settings`,
         )
+        
         if (updated.status !== 200) {
           return toast("Error", {
             description: "Oops! looks like your form is empty",
@@ -248,7 +249,7 @@ const [onDescription, setOnDescription] = useState<string | undefined>(
   })
   const router = useRouter()
   const onUpdate = handleSubmit(async (values) => update(values))
-  if (data?.status !== 200) router.push(`/group/create`)
+  //if (data?.status !== 200) router.push(`/group/create`)
 
   return {
     data,
@@ -263,7 +264,6 @@ const [onDescription, setOnDescription] = useState<string | undefined>(
     setOnDescription,
     onDescription,
   }
-
   }
 
 export const useExploreSlider = (query: string, paginate: number) => {

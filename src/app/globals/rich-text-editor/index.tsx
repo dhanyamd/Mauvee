@@ -22,6 +22,7 @@ import { ColorSelector } from "./color-selector"
 import NodeSelector from "./node-selector"
 import { defaultExtensions } from "./extensions"
 import { Video } from "./video"
+import { Image } from "./image"
 
 
 type Props = {
@@ -86,21 +87,20 @@ const BlockTextEditor = ({
               },
             }}
             extensions={[
-              //@ts-ignore
+              
               ...defaultExtensions,
-              //@ts-ignore
+             
               slashCommand,
-           //@ts-ignore
+           
               CharacterCount.configure({
                 limit: max,
               }),
-              //@ts-ignore
+              
               Placeholder.configure({
                 placeholder: "Type / to insert element...",
               }),
-             //@ts-ignore
               Video,
-              //@ts-ignore
+             
               Image,
             ]}
             onUpdate={({ editor }) => {
