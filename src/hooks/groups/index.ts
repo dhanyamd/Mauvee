@@ -305,3 +305,22 @@ export const useExploreSlider = (query: string, paginate: number) => {
   
     return { groups, status }
   }
+
+  export const useGroupInfo = () => {
+    const { data } = useQuery({
+      queryKey: ["about-group-info"],
+    })
+  
+    const router = useRouter()
+  
+    if (!data) router.push("/explore")
+  
+    const { group, status } = data as { status: number; group: GroupStateProps }
+  
+    if (status !== 200) router.push("/explore")
+  
+    return {
+      group,
+    }
+  }
+  
