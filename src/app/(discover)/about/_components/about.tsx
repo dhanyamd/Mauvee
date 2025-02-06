@@ -3,6 +3,11 @@ import { NoResult } from '@/app/globals/search/no-result'
 import { useGroupInfo } from '@/hooks/groups'
 import { useGroupAbout } from '@/hooks/groups/groupcreate'
 import React from 'react'
+import MediaGallery from './gallery'
+import { Button } from '@/components/ui/button'
+import { Loader } from '@/components/loader'
+import { HtmlParser } from '@/app/globals/html-parser'
+import BlockTextEditor from '@/app/globals/rich-text-editor'
 
 type Props = {
     userid : string,
@@ -77,6 +82,49 @@ const AboutGroup = ({groupid, userid} : Props) => {
         </div>
 </div>
    )}
+   <MediaGallery
+   gallery={group.gallery}
+   groupid={groupid}
+   onActive={onSetActionMedia}
+   userid={userid}
+   groupUserid={group.userId}
+   />
+
+{userid !== group.userId ? (
+        <HtmlParser html={group.htmlDescription || "<></>"} />
+      ) : (
+        <form
+          ref={editor}
+          onSubmit={onUpdateDescription}
+          className="mt-5 flex flex-col"
+        >
+          <BlockTextEditor
+            onEdit={onEditDescription}
+            max={10000}
+            inline
+            min={100}
+            disabled={userid === group.userId ? false : true}
+            name="jsondescription"
+            errors={errors}
+            setContent={setJsonDescription}
+            content={onJsonDescription}
+            htmlContent={group.htmlDescription as string | undefined}
+            setHtmlContent={setOnHtmlDescription}
+            textContent={onDescription}
+            setTextContent={setOnDescription}
+          />
+          {onEditDescription && (
+            <Button
+              className="self-end bg-themeBlack border-themeGray px-10"
+              variant={"outline"}
+              disabled={isPending}
+              type="submit"
+            >
+              <Loader loading={isPending}>Update</Loader>
+            </Button>
+          )}
+        </form>
+      )}
    </div>
   )
   
