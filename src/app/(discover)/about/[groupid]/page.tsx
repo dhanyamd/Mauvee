@@ -17,16 +17,16 @@ const Page = async({params} : Props) => {
         queryFn: () => onGetGroupInfo(params.groupid)
     })
 
-    await query.prefetchQuery({
+    /*await query.prefetchQuery({
         queryKey: ["active-subscription"],
         queryFn: () => onGetActiveSubscription(params.groupid)
-    })
+    })*/
     const userid = await onAuthenticatedUser()
   return (
     <HydrationBoundary state={dehydrate(query)}>
    <div className='pt-36 pb-10 container grid grid-cols-1 lg:grid-cols-3 gap-x-10'>
    <div className='col-span-1 lg:col-span-2'>
-   <AboutGroup groupid={params.groupid} userid={userid.id!}/>
+   <AboutGroup userid={userid.id!} groupid={params.groupid}/>
    </div>
    </div>
     </HydrationBoundary>

@@ -133,7 +133,7 @@ const onSetDescriptions = () => {
   useEffect(() => {
     document.addEventListener("click", onEditTextEditor, false)
     return () => {
-      document.removeEventListener("click", onEditTextEditor), false
+      document.removeEventListener("click", onEditTextEditor),false 
     }
   },[])
   //optimistic ui => useMutation 
@@ -215,3 +215,4 @@ const onSetDescriptions = () => {
    isPending
   }
 }
+

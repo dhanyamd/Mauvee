@@ -42,9 +42,7 @@ const AboutGroup = ({groupid, userid} : Props) => {
     <h2 className='font-bold text-[56px] leading-none md:leading-normal'>
     {group.name}
     </h2>
-    <p className='text-themeTextGray leading-none md:mt-2 mt-5'>
-     {group.description}
-    </p>
+   
    </div>
    {group.gallery.length > 0 && (
     <div className='relative rounded-xl'>
