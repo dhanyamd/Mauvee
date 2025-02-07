@@ -1,12 +1,14 @@
-import { onCreateNewGroup } from "@/app/actions/groups"
+import { onCreateNewGroup, onGetGroupChannels, useJoinGroup } from "@/app/actions/groups"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import { CreateGroupSchema } from "./schema"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { onGetActiveSubscription } from "@/app/actions/payment"
+import { group } from "console"
 
 export const useCreateGroup = (
     userId: string,
@@ -72,4 +74,23 @@ export const useCreateGroup = (
     }
 }
 
+export const useActiveGroupSubscription = (groupid : string) => {
+  const {data} = useQuery({
+    queryKey : ["active-subscription"],
+    queryFn: () => onGetActiveSubscription(groupid)
+  })
+  return {data}
+}
+
+export const useJoinFree = (groupid : string) => {
+  const router = useRouter()
+  const onJoinFreeGroup = async () => {
+    const member = await useJoinGroup(groupid)
+    if(member?.status === 200) {
+      const channels = await onGetGroupChannels(groupid)
+      router.push(`/group/${groupid}/channel/${channels?.channels?.[0].id}`)
+    }
+  }
+  return {onJoinFreeGroup}
+}
   

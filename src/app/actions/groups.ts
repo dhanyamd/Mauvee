@@ -502,3 +502,26 @@ export const onUpdateGroupGallery = async (
     return {status: 400, message: "Looks like something went wrong"}
   }
 }
+
+export const useJoinGroup = async(groupid : string) => {
+  try {
+    const user = await onAuthenticatedUser()
+    const member = await client.group.update({
+      where: {
+        id: groupid
+      },
+      data: {
+        member : {
+          create: {
+            userId: user.id
+          }
+        }
+      }
+    })
+    if(member) {
+      return {status : 200}
+    }
+  } catch (error) {
+    return {status : 404}
+  }
+}
