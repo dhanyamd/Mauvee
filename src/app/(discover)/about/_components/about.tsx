@@ -1,94 +1,92 @@
-'use client'
-import { NoResult } from '@/app/globals/search/no-result'
-import { useGroupInfo } from '@/hooks/groups'
-import { useGroupAbout } from '@/hooks/groups/groupcreate'
-import React from 'react'
-import MediaGallery from './gallery'
-import { Button } from '@/components/ui/button'
-import { Loader } from '@/components/loader'
-import { HtmlParser } from '@/app/globals/html-parser'
-import BlockTextEditor from '@/app/globals/rich-text-editor'
+"use client"
 
-type Props = {
-    userid : string,
-    groupid : string
-}
+import { Button } from "@/components/ui/button"
+import {  useGroupInfo } from "@/hooks/groups"
+import MediaGallery from "./gallery"
+import { useGroupAbout } from "@/hooks/groups/groupcreate"
+import { NoResult } from "@/app/globals/search/no-result"
+import { HtmlParser } from "@/app/globals/html-parser"
+import BlockTextEditor from "@/app/globals/rich-text-editor"
+import { Loader } from "@/components/loader"
 
-const AboutGroup = ({groupid, userid} : Props) => {
-    const { group } = useGroupInfo()
-    const {
-      activeMedia, 
-      editor,
-      errors,
-      isPending, 
-      onDescription,
-      onEditDescription,
-      onJsonDescription,
-      onSetActionMedia,
-      onUpdateDescription,
-      setJsonDescription,
-      setOnDescription, setOnHtmlDescription
-    } = useGroupAbout( group.description, group.jsonDescription, group.htmlDescription, group.gallery[0], groupid)
+type Props = { userid: string; groupid: string }
 
-  if(!group)
+const AboutGroup = ({ groupid, userid }: Props) => {
+  const { group } = useGroupInfo()
+  const {
+    setJsonDescription,
+    setOnDescription,
+    onDescription,
+    onJsonDescription,
+    errors,
+    onEditDescription,
+    editor,
+    activeMedia,
+    onSetActionMedia,
+    onUpdateDescription,
+    isPending,
+    setOnHtmlDescription,
+  } = useGroupAbout(
+    group.description,
+    group.jsonDescription,
+    group.htmlDescription,
+    group.gallery[0],
+    groupid,
+  )
+
+  if (!group)
     return (
-  <div>
-    <NoResult />
-  </div>)
+      <div>
+        <NoResult />
+      </div>
+    )
 
   return (
-   <div className='flex flex-col gap-y-10'>
-   <div>
-    <h2 className='font-bold text-[56px] leading-none md:leading-normal'>
-    {group.name}
-    </h2>
-   
-   </div>
-   {group.gallery.length > 0 && (
-    <div className='relative rounded-xl'>
-      <div className='img--overlay absolute h-2/6 bottom-0 w-full z-50'>
-        {activeMedia?.type === "IMAGE" ? (
-          <img 
-          src={`https://ucarecdn.com/${activeMedia.url}/`}
-          alt='group-img'
-          className='w-full aspect-video z-20 rounded-t-xl'
-          />
-        ) :
-         activeMedia?.type === "LOOM" ? (
-          <div className='w-full aspect-video'>
-            <iframe
-            src={activeMedia.url}
-            allowFullScreen
-            className='absolute outline-none border-0 top-0 left-0 w-full h-full rounded-t-xl'
-            >
-
-            </iframe>
+    <div className="flex flex-col gap-y-10">
+      <div>
+        <h2 className="font-bold text-[56px] leading-none md:leading-normal">
+          {group.name}
+        </h2>
+      </div>
+      {group.gallery.length > 0 && (
+        <div className="relative rounded-xl">
+          <div className="img--overlay absolute h-2/6 bottom-0 w-full z-50" />
+          {activeMedia?.type === "IMAGE" ? (
+            <img
+              src={`https://ucarecdn.com/${activeMedia.url}/`}
+              alt="group-img"
+              className="w-full aspect-video z-20 rounded-t-xl"
+            />
+          ) : activeMedia?.type === "LOOM" ? (
+            <div className="w-full aspect-video">
+              <iframe
+                src={activeMedia.url}
+                allowFullScreen
+                className="absolute outline-none border-0 top-0 left-0 w-full h-full rounded-t-xl"
+              ></iframe>
             </div>
-         ) : (
-          activeMedia?.type === "YOUTUBE" && (
-            <div className='w-full aspect-video relative'>
-              <iframe 
-              allowFullScreen
-              src={activeMedia.url}
-              allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
-              className='w-full absolute top-0 left-0 h-full rounded-xl'>
-              </iframe>
+          ) : (
+            activeMedia?.type === "YOUTUBE" && (
+              <div className="w-full aspect-video relative">
+                <iframe
+                  className="w-full absolute top-0 left-0 h-full rounded-xl"
+                  src={activeMedia.url}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                ></iframe>
               </div>
-          )
-         )
-        }
+            )
+          )}
         </div>
-</div>
-   )}
-   <MediaGallery
-   gallery={group.gallery}
-   groupid={groupid}
-   onActive={onSetActionMedia}
-   userid={userid}
-   groupUserid={group.userId}
-   />
-
-{userid !== group.userId ? (
+      )}
+      <MediaGallery
+        groupid={groupid}
+        gallery={group.gallery}
+        onActive={onSetActionMedia}
+        userid={userid}
+        groupUserid={group.userId}
+      />
+      {userid !== group.userId ? (
         <HtmlParser html={group.htmlDescription || "<></>"} />
       ) : (
         <form
@@ -123,9 +121,8 @@ const AboutGroup = ({groupid, userid} : Props) => {
           )}
         </form>
       )}
-   </div>
+    </div>
   )
-  
 }
 
 export default AboutGroup
