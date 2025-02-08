@@ -1,5 +1,5 @@
-import { onUpdateChannelInfo, onDeleteChannel } from "@/app/actions/channel"
-import { useQueryClient, useMutation } from "@tanstack/react-query"
+import { onUpdateChannelInfo, onDeleteChannel, onGetChannelInfo } from "@/app/actions/channel"
+import { useQueryClient, useMutation, useQuery, useMutationState } from "@tanstack/react-query"
 import { useRef, useState, useEffect } from "react"
 import { toast } from "sonner"
 
@@ -98,6 +98,24 @@ import { toast } from "sonner"
       onChannelDetele,
       deleteVariables,
     }
+  }
+
+  export const useChannelPage = (channelid : string) => {
+    const {data} = useQuery({
+      queryKey: ["channel-info"],
+      queryFn: () => onGetChannelInfo(channelid)
+    })
+
+    const mutation = useMutationState({
+      filters: {mutationKey: ["create-post"], status: "pending"},
+      select: (mutation) => {
+        return {
+          state: mutation.state.variables as any,
+          status: mutation.state.status
+        }
+      }
+    })
+    return {data, mutation}
   }
   
 
