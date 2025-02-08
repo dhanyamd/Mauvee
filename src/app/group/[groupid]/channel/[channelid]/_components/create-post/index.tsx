@@ -1,9 +1,11 @@
 'use client'
+import PostContent from '@/app/globals/post-content';
 import { SimpleModal } from '@/app/globals/simple-modal';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription } from '@/components/ui/card';
 import { useChannelPage } from '@/hooks/channels';
 import React from 'react'
+import PostCard from '../post-feed/post-card';
 
 type Props = { userImage : string; channelid : string; username: string}
 
@@ -34,12 +36,25 @@ const CreateNewPost = ({userImage, channelid, username}: Props) => {
         </Avatar>
         <div className='flex flex-col'>
        <p className='text-themeTextGray text-sm capitalize'>{username}</p>
-       <p className='text-sm capitalize text-themeTextGray'>Posting in{" "}</p>
-       <span className='font-bold capitalize text-themeTextWhite '>{name}</span>
+       <p className='text-sm capitalize text-themeTextGray'>Posting in{" "}
+       <span className='font-bold capitalize text-themeTextWhite '>{name}</span> </p>
         </div>
          </div>
+         <PostContent channelid={channelid}/>
       </SimpleModal>
-   
+     {mutation.length > 0 && mutation[0].status === "pending" && mutation[0].state && (
+        <PostCard 
+        channelname={name}
+        userimage={userImage}
+        username={username}
+        html={mutation[0].state.htmlContent}
+        title={mutation[0].state.title}
+        likes={0}
+        comments={0}
+        postid={mutation[0].state.postid}
+        optimistic
+        />
+     )}
    </>
   )
 }
