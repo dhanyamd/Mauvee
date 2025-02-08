@@ -21,7 +21,6 @@ const PostContent = ({channelid} : PostContentProps) => {
         setJsonDescription,
         setOnDescription,
         setOnHtmlDescription, 
-        setValue
     } =  useCreateChannelPost(channelid)
   return (
     <form className='flex flex-col gap-y-5 w-full' onSubmit={onCreatePost}>

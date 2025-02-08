@@ -1,11 +1,12 @@
 'use client'
-import { Like } from '@/icons/like'
 import { Unlike } from '@/icons/unlike'
 import { cn } from '@/lib/utils'
 import { MessageCircle } from 'lucide-react'
 import { v4 as uuidv4 } from "uuid"
 import React from 'react'
 import { useLikeChannelPost } from '@/hooks/channels'
+import { Like } from '@/icons/like'
+import { Heart } from '@/icons/heart'
 
 type InteractionProps = {
     id : string 
@@ -43,14 +44,14 @@ const Interactions = ({
             <span onClick={() => mutate({likeid: likeid!})}
             className='cursor-pointer'
             >
-                <Like/>
+                <Like />
                 </span>
         ) : (
             <span onClick={() => mutate({likeid: uuidv4()})} className='cursor-pointer'>
-                
+                <Unlike />
                 </span>
         )}
-        {isPending ? likedUser === userid ? likes-1 : likes+1 : likes}
+        {isPending ? likedUser === userid ? likes - 1 : likes + 1 : likes}
       </span>
       <span className='flex gap-1 justify-center items-center'>
       <MessageCircle size={16}/>
