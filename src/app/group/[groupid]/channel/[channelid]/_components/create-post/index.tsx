@@ -5,13 +5,14 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription } from '@/components/ui/card';
 import { useChannelPage } from '@/hooks/channels';
 import React from 'react'
-import PostCard from '../post-feed/post-card';
+import {PostCard} from '../post-feed/post-card';
 
 type Props = { userImage : string; channelid : string; username: string}
 
 const CreateNewPost = ({userImage, channelid, username}: Props) => {
     const {data, mutation} = useChannelPage(channelid)
     const {name} = data as {name : string}
+    console.log(username)
   return (
    <>
       <SimpleModal trigger={
@@ -36,7 +37,7 @@ const CreateNewPost = ({userImage, channelid, username}: Props) => {
         </Avatar>
         <div className='flex flex-col'>
        <p className='text-themeTextGray text-sm capitalize'>{username}</p>
-       <p className='text-sm capitalize text-themeTextGray'>Posting in{" "}
+       <p className='text-sm capitalize text-themeTextGray'>Posting in {" "}
        <span className='font-bold capitalize text-themeTextWhite '>{name}</span> </p>
         </div>
          </div>

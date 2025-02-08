@@ -1,3 +1,4 @@
+'use client'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import React from 'react'
 
@@ -8,6 +9,7 @@ type PostAuthorProps = {
 }
 
 const PostAuthor = ({image, username, channel} : PostAuthorProps) => {
+  console.log(username)
   return (
     <div className='flex gap-x-3 items-center'>
     <Avatar className='cursor-pointer'>
@@ -17,7 +19,7 @@ const PostAuthor = ({image, username, channel} : PostAuthorProps) => {
     <div className='flex flex-col'>
     <p className='text-themeTextGray text-sm capitalize'>{username}</p>
     <p className='text-sm capitalize text-themeTextGray'>
-        Posted in{" "}
+        Posted in {" "}
         <span className='font-bold capitalize text-themeTextWhite'>
             {channel}
         </span>

@@ -8,6 +8,7 @@ import React from 'react'
 import CreateNewPost from './_components/create-post'
 import Menu from '@/app/(landing)/_components/navbar/menu'
 import GroupSideWidget from '@/app/globals/group-side-widget'
+import PostFeed from './_components/post-feed'
 
 type Props = {
     params : {channelid : string, groupid: string}
@@ -40,6 +41,7 @@ userImage={user?.imageUrl!}
 channelid={params.channelid}
  username={user?.firstName!}
 />
+<PostFeed channelid={params.channelid} userid={authUser.id!}/>
 </div>
 <div className='col-span-1 hidden lg:inline relative py-5'>
 <GroupSideWidget light/>

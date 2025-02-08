@@ -27,7 +27,7 @@ const PostContent = ({channelid} : PostContentProps) => {
     <form className='flex flex-col gap-y-5 w-full' onSubmit={onCreatePost}>
    <Input 
    placeholder='Title'
-   className='bg-transparent outline-none border-none text-2xl p-0'
+   className='bg-transparent outline-none border-none text-2xl p-2'
    {...register("title")}
    />
    <BlockTextEditor 

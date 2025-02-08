@@ -23,7 +23,7 @@ type Props = {
     optimistic? : boolean
 }
 
-const PostCard = ({
+export const PostCard = ({
     userid,
     userimage,
     username,
@@ -67,4 +67,3 @@ const PostCard = ({
   )
 }
 
-export default PostCard

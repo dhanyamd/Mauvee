@@ -23,7 +23,7 @@ export const onAuthenticatedUser = async () => {
             status : 200,
             id : user.id,
             image : clerk.imageUrl,
-            username : `${user.firstname} ${user.lastname}`
+            username : `${user.firstname }  ${user.lastname}`
         }
        }
        return {status : 404}

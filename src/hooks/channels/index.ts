@@ -158,10 +158,10 @@ import { v4 } from "uuid"
       mutationFn: (data: {
         title: string 
         content: string 
-        htmlcontent: string 
+        htmlContent: string 
         jsoncontent: string
         postid: string
-      }) => onCreateChannelPost(channelid, data.title, data.content, data.htmlcontent, data.jsoncontent,data.postid),
+      }) => onCreateChannelPost(channelid, data.title, data.content, data.htmlContent, data.jsoncontent,data.postid),
       onSuccess: (data) => {
         setJsonDescription(undefined)
         setOnHtmlDescription(undefined)
@@ -180,7 +180,7 @@ import { v4 } from "uuid"
     mutate({
       title: values.title,
       content: values.content!,
-      htmlcontent: values.htmlcontent!,
+      htmlContent: values.htmlcontent!,
       jsoncontent: values.jsoncontent!,
       postid: v4()
     })
