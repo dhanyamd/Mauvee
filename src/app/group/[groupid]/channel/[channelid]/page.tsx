@@ -1,8 +1,9 @@
+import LeaderBoard from '@/app/(discover)/_components/leaderboard'
 import { onAuthenticatedUser } from '@/app/actions/auth'
 import { onGetChannelInfo } from '@/app/actions/channel'
 import { onGetGroupInfo } from '@/app/actions/groups'
 import { currentUser } from '@clerk/nextjs/server'
-import { QueryClient } from '@tanstack/react-query'
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
 import React from 'react'
 
 type Props = {
@@ -24,9 +25,13 @@ await client.prefetchQuery({
     queryFn : () => onGetGroupInfo(params?.groupid)
 })
   return (
-    <div>
-      
-    </div>
+   <HydrationBoundary state={dehydrate(client)}>
+   <div className='grid lg:grid-cols-4 grid-cols-1 w-full flex-1 h-0 gap-x-5 px-5'>
+<div className='col-span-1 lg:inline relative hidden py-5'>
+<LeaderBoard light/>
+</div>
+   </div>
+   </HydrationBoundary>
   )
 }
 
