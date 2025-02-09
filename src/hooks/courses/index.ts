@@ -8,7 +8,8 @@ import { onGetGroupInfo } from "@/app/actions/groups"
 import { upload } from "@/lib/uploadcare"
 import { onCreateGroupCourse } from "@/app/actions/courses"
 import { toast } from "sonner"
-import { v4 as uuidv4, v4 } from "uuid"
+import { v4 } from "uuid"
+import { onAuthenticatedUser } from "@/app/actions/auth"
 export const useCreateCourse = (groupid: string) => {
     const [onPrivacy, setOnPrivacy] = useState<string | undefined>("open")
     const buttonRef = useRef<HTMLButtonElement | null>(null)
@@ -19,7 +20,6 @@ export const useCreateCourse = (groupid: string) => {
             published: false
         }
     })
-
     useEffect(() => {
         const privacy = watch(({privacy}) => setOnPrivacy(privacy))
         return () => privacy.unsubscribe()
@@ -84,6 +84,6 @@ export const useCreateCourse = (groupid: string) => {
         isPending,
         onPrivacy,
         setValue,
-        data
+        data,
     }
 }

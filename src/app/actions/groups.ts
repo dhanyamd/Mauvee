@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux"
 import { useEffect, useLayoutEffect, useState } from "react"
 import { onClearList, onInfiniteScroll } from "@/redux/slices/infinite-scroll-slice"
 import { GroupStateProps } from "@/redux/slices/search-slice"
+import { currentUser } from "@clerk/nextjs/server"
 
 export const onGetAffiliateInfo = async(id : string) => {
     try {
@@ -126,8 +127,9 @@ export const onCreateNewGroup = async (
         return {
            status : 200, 
            group : group,
-           groupOwner : group.id == user.id ? true : false
+           groupOwner : group.userId == user.id ? true : false 
         }
+
       return {status : 404}
       
     }catch(error){
