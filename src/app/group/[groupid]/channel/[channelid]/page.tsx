@@ -34,7 +34,7 @@ await client.prefetchQuery({
 <div className='col-span-1 lg:inline relative hidden py-5'>
 <LeaderBoard light/>
 </div>
-<div className='lg:col-span-2 flex flex-col gap-y-5 py-5'>
+<div className='lg:col-span-2 flex flex-col gap-y-5 py-5 '>
   <Menu orientation='desktop'/>
 <CreateNewPost 
 userImage={user?.imageUrl!}

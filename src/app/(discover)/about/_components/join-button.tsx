@@ -12,7 +12,7 @@ const JoinButton = ({groupid, owner} : JoinButtonProps) => {
     //WIP : adding subscriptions
     const { data } = useActiveGroupSubscription(groupid)
     const { onJoinFreeGroup } = useJoinFree(groupid)
-     if(owner) {
+     if(!owner) {
         if(data?.status !== 200) {
             return (
                 <GlassModal
