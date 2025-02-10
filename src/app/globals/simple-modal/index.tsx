@@ -1,6 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ArrowLeft, ArrowRight } from "lucide-react"
 import Image from "next/image"
+import { JSX } from "react"
 
 type SimpleModalProps = {
     trigger: JSX.Element

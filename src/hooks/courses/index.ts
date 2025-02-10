@@ -6,10 +6,9 @@ import { CreateCourseSchema } from "./schema"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { onGetGroupInfo } from "@/app/actions/groups"
 import { upload } from "@/lib/uploadcare"
-import { onCreateGroupCourse, onGetGroupCourses } from "@/app/actions/courses"
+import { onCreateCourseModule, onCreateGroupCourse, onGetGroupCourses } from "@/app/actions/courses"
 import { toast } from "sonner"
 import { v4 } from "uuid"
-import { onAuthenticatedUser } from "@/app/actions/auth"
 export const useCreateCourse = (groupid: string) => {
     const [onPrivacy, setOnPrivacy] = useState<string | undefined>("open")
     const buttonRef = useRef<HTMLButtonElement | null>(null)
@@ -95,4 +94,39 @@ export const useCourses = (groupid : string) => {
     })
 
     return {data}
+}
+
+export const useCreateModule = (courseId: string, groupid: string) => {
+    const client = useQueryClient()
+
+    const {data} = useQuery({
+        queryKey: ["group-info"],
+        queryFn: () => onGetGroupInfo(groupid)
+    })
+
+    const {mutate, variables, isPending} = useMutation({
+        mutationKey: ["create-module"],
+        mutationFn: (data: {
+            courseId: string 
+            title: string 
+            moduleId: string
+        }) => onCreateCourseModule(data.courseId, data.title, data.moduleId ),
+        onSuccess: (data) => {
+            toast(data.status == 200 ? "Success" : "Error", {
+              description: data.message      
+            })
+        },
+        onSettled: async () => {
+            return await client.invalidateQueries({
+                queryKey: ["course-modules"]
+            })
+        }
+    })
+    const onCreateModule = () => 
+        mutate({
+            courseId,
+            title: "New Module",
+            moduleId: v4()
+        })
+        return {data, onCreateModule, isPending, variables}
 }

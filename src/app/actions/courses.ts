@@ -65,3 +65,61 @@ export const onCreateGroupCourse = async (
         return {status: 400, message: "Oops! something went wrong"}
     }
 }
+
+export const onGetCourseModules = async (courseId: string) => {
+    try {
+        const modules = await client.module.findMany({
+            where: {
+                courseId
+            },
+            orderBy: {
+                createdAt: "desc"
+            },
+            include: {
+                section: {
+                    orderBy: {
+                        createdAt: "asc"
+                    }
+                }
+            }
+        })
+        if(modules && modules.length > 0) {
+            return {status: 200, modules}
+        }
+    } catch (error) {
+        return {
+            status: 404,
+            message: "No modules found"
+        }
+    }
+}
+
+export const onCreateCourseModule = async (courseId: string, name: string, moduleId: string) => {
+    try {
+        const courseModule = await client.course.update({
+            where: {
+                id: courseId
+            },
+            data: {
+                modules: {
+                    create: {
+                        title: name,
+                        id: moduleId
+                    }
+                }
+            }
+        })
+        if(courseModule) {
+            return {status : 200, message: "Module successfully created"}
+        }
+        return {
+            status: 404,
+            message: "Noc ourses found"
+        }
+    } catch (error) {
+        return {
+            status: 400,
+            message: "OOps! Something went wrong"
+        }
+    }
+}

@@ -39,7 +39,7 @@ const CourseCreate = ({groupid} : Props) => {
         trigger={
             <span>
                 <Card className='bg-[#101011] border-themeGray hover:bg-themeBlack transition 
-                duration-100 cursor-pointer border-dashed aspect-square rounded-xl '>
+                duration-100 cursor-pointer border-dashed aspect-square rounded-xl'>
                 <CardContent className='opacity-20 flex gap-x-2 p-0 justify-center items-center h-full'>
                   <BadgePlus />
                   <p className=''>Create Course</p>
@@ -119,13 +119,14 @@ const CourseCreate = ({groupid} : Props) => {
        </div>
        <Label htmlFor='course-image'>
         <span>
-            <Input className='hidden' type='file' {...register("image")} id='course-image' />
+            {/**WIP: classname make it as hidden */}
+            <Input className='' onClick={() => <p className='bg-white text-2xl'>Uploaded</p>} type='file' {...register("image")} id='course-image' />
             <Card
             className="bg-themeBlack bg-transparent py-5 hover:bg-themeBlack transition duration-100 border-dashed aspect-video
             flex justify-center items-center border-themeGray font-bold text-themeTextGray cursor-pointer rounded-xl"
             
             >
-              Double click the image you want to enter :)
+              Double click the image you wanna enter :)
             </Card>
         </span>
         <ErrorMessage 
