@@ -58,7 +58,7 @@ export const onCreateGroupCourse = async (
             }
         })
         if(course) {
-            return {status : 200, message: "Cpurse successfully created"}
+            return {status : 200, message: "Course successfully created"}
         }
         return {status: 400, message: "Group not found"}
     } catch (error) {

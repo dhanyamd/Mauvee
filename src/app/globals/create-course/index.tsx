@@ -125,7 +125,7 @@ const CourseCreate = ({groupid} : Props) => {
             flex justify-center items-center border-themeGray font-bold text-themeTextGray cursor-pointer rounded-xl"
             
             >
-              Upload Image
+              Double click the image you want to enter :)
             </Card>
         </span>
         <ErrorMessage 

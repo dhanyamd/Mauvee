@@ -6,7 +6,7 @@ import { CreateCourseSchema } from "./schema"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { onGetGroupInfo } from "@/app/actions/groups"
 import { upload } from "@/lib/uploadcare"
-import { onCreateGroupCourse } from "@/app/actions/courses"
+import { onCreateGroupCourse, onGetGroupCourses } from "@/app/actions/courses"
 import { toast } from "sonner"
 import { v4 } from "uuid"
 import { onAuthenticatedUser } from "@/app/actions/auth"
@@ -86,4 +86,13 @@ export const useCreateCourse = (groupid: string) => {
         setValue,
         data,
     }
+}
+
+export const useCourses = (groupid : string) => {
+    const {data} = useQuery({
+        queryKey: ["group-courses"],
+        queryFn: () => onGetGroupCourses(groupid)
+    })
+
+    return {data}
 }

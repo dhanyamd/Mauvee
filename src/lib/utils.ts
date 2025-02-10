@@ -11,7 +11,7 @@ export const supabaseClient = createClient(
 )
 
 export const truncateString = (string: string) => {
-  return string.slice(0, 60) + "..."
+  return string.slice(0, 50) + "..."
 }
 
 export const validateURLString = (url: string) => {
