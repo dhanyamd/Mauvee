@@ -6,7 +6,7 @@ import { CreateCourseSchema } from "./schema"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { onGetGroupInfo } from "@/app/actions/groups"
 import { upload } from "@/lib/uploadcare"
-import { onCreateCourseModule, onCreateGroupCourse, onCreateModuleSection, onGetCourseModules, onGetGroupCourses, onUpdateModule, onUpdateModuleSection } from "@/app/actions/courses"
+import { onCreateCourseModule, onCreateGroupCourse, onCreateModuleSection, onGetCourseModules, onGetGroupCourses, onUpdateModule, onUpdateSection } from "@/app/actions/courses"
 import { toast } from "sonner"
 import { v4 } from "uuid"
 import { usePathname } from "next/navigation"
@@ -176,7 +176,7 @@ export const useCourseModule = (courseId: string, groupid: string) => {
          variables: updateVariables
     } = useMutation({
      mutationFn: (data: {type: "NAME"; content: string}) => 
-        onUpdateModuleSection(activeSection!, data.type, data.content),
+        onUpdateSection(activeSection!, data.type, data.content),
      onMutate: () => setEditSection(false),
      onSuccess: (data) => {
         toast(data?.status === 200 ? "Success" : "Error", {
@@ -240,7 +240,7 @@ export const useCourseModule = (courseId: string, groupid: string) => {
                         content: sectionInputRef.current.value
                     })
                 } else {
-                    setEdit(false)
+                    setEditSection(false)
                 }
             }
         }
@@ -267,7 +267,7 @@ export const useCourseModule = (courseId: string, groupid: string) => {
 
    return {
     data,
-    activeSection,
+   // activeSection,
     onEditModule,
     edit,
     triggerRef,
@@ -284,6 +284,7 @@ export const useCourseModule = (courseId: string, groupid: string) => {
     sectionInputRef,
     contentRef,
     editSection,
+    activeSection,
     sectionUpdatePending,
     updateVariables,
    }

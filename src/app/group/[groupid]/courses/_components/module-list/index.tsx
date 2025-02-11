@@ -6,10 +6,11 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useCourseModule } from '@/hooks/courses'
 import { Empty } from '@/icons/empty'
-import { Check, Circle, Plus } from 'lucide-react'
+import { Check, Circle, Key, Plus } from 'lucide-react'
 import { v4 as uuid4, v4 } from 'uuid'
 import Link from 'next/link'
 import React from 'react'
+import { redirect } from 'next/navigation'
 type Props = {
     courseId: string,
     groupid: string
@@ -27,11 +28,11 @@ const CourseList = ({courseId, groupid}: Props) => {
         onEditSection,
         pathname,
         pendingSection,
+        activeSection,
         sectionInputRef,
         sectionUpdatePending,
         sectionVariables,
         setActiveSection,
-        activeSection,
         triggerRef,
         updateVariables,
         variables
@@ -60,11 +61,14 @@ const CourseList = ({courseId, groupid}: Props) => {
                 <Link
                 ref={contentRef}
                 onDoubleClick={onEditSection}
-                onClick={() => setActiveSection(section.id)}
+                onClick={() => 
+                    setActiveSection(section.id)}
                 className='flex gap-x-3 items-center capitalize'
                 key={section.id}
-                href={`/group/${groupid}/courses/${courseId}/${section.id}`}
+              // href={``}
+               href={`/group/${groupid}/courses/${courseId}/${section.id}`}
                 >
+                    
                     {section.complete ? <Check/> : <Circle />}
                     <IconRenderer 
                     icon={section.icon}
@@ -72,6 +76,7 @@ const CourseList = ({courseId, groupid}: Props) => {
                         pathname.split("/").pop() === section.id ? "LIGHT" : "DARK"
                     }
                     />
+                  <Link href={`/group/${groupid}/courses/${courseId}`}>
                  {editSection && activeSection === section.id ? (
                     <Input 
                     ref={sectionInputRef}
@@ -82,11 +87,14 @@ const CourseList = ({courseId, groupid}: Props) => {
                  ): (
                     section.name
                  )} 
-                </Link>
+                 </Link>
+                   
+                   </Link>
+              
             ))
-        ) : <></>}
+        ) : (<></>)}
 
-        {!groupOwner?.groupOwner && (
+        {groupOwner?.groupOwner && (
             <>
             {pendingSection && sectionVariables && (
                 <Link 
@@ -110,7 +118,7 @@ const CourseList = ({courseId, groupid}: Props) => {
                 moduleid: module.id,
                 sectionid: v4()
             })}
-            variant={"outline"}
+            variant="outline"
             className='bg-transparent border-themeGray text-themeTextGray mt-2'
             >
             <Plus />

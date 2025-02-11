@@ -152,7 +152,7 @@ export const onUpdateModule = async (
   }
 }
 
-export const onUpdateModuleSection = async (sectionId: string, type: "NAME" | "COMPLETE", content: string) => {
+export const onUpdateSection = async (sectionId: string, type: "NAME" | "COMPLETE", content: string) => {
     try {
         if (type === "NAME"){
             await client.section.update({
@@ -176,12 +176,13 @@ export const onUpdateModuleSection = async (sectionId: string, type: "NAME" | "C
             })
             return {status : 200, message: "Section successfully completed"}
         }
+        return {status: 400, message: "SOMETHING WENT WRONG"}
     } catch (error) {
         return {status: 400, message: "SOMETHING WENT WRONG"}
     }
 }
 
-export const onCreateModuleSection = async (sectionId: string, moduleId: string) => {
+export const onCreateModuleSection = async (moduleId: string, sectionid: string) => {
     try {    
         const section = await client.module.update({
             where: {
@@ -190,7 +191,7 @@ export const onCreateModuleSection = async (sectionId: string, moduleId: string)
             data: {
                 section: {
                     create: {
-                        id: sectionId
+                        id: sectionid
                     }
                 }
             }
