@@ -11,8 +11,9 @@ type Props = { userImage : string; channelid : string; username: string}
 
 const CreateNewPost = ({userImage, channelid, username}: Props) => {
     const {data, mutation} = useChannelPage(channelid)
-    const {name} = data as {name : string}
-    console.log(username)
+    //@ts-ignore
+    const { name } = data as {name : string}
+    
   return (
    <>
       <SimpleModal trigger={

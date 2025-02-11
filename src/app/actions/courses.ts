@@ -205,3 +205,18 @@ export const onCreateModuleSection = async (moduleId: string, sectionid: string)
     }
 }
 
+export const onGetSectionInfo = async (sectionid: string) => {
+  try {
+    const section = await client.section.findUnique({
+        where: {
+            id: sectionid
+        }
+    })
+    if(section) {
+        return {status : 200, section}
+    }
+    return {status : 404, message: "Course section not found"}
+  } catch (error) {
+    return {status: 404, message: "Oops! Somethinh went wrong"}
+  }
+}

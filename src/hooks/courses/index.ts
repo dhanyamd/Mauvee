@@ -6,7 +6,7 @@ import { CreateCourseSchema } from "./schema"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { onGetGroupInfo } from "@/app/actions/groups"
 import { upload } from "@/lib/uploadcare"
-import { onCreateCourseModule, onCreateGroupCourse, onCreateModuleSection, onGetCourseModules, onGetGroupCourses, onUpdateModule, onUpdateSection } from "@/app/actions/courses"
+import { onCreateCourseModule, onCreateGroupCourse, onCreateModuleSection, onGetCourseModules, onGetGroupCourses, onGetSectionInfo, onUpdateModule, onUpdateSection } from "@/app/actions/courses"
 import { toast } from "sonner"
 import { v4 } from "uuid"
 import { usePathname } from "next/navigation"
@@ -288,4 +288,28 @@ export const useCourseModule = (courseId: string, groupid: string) => {
     sectionUpdatePending,
     updateVariables,
    }
+}
+
+export const useSectionNavBar = (sectionid: string) => {
+    const {data} = useQuery({
+        queryKey: ["section-info"],
+        queryFn: () => onGetSectionInfo(sectionid)
+    })
+
+    const client = useQueryClient()
+
+    const {isPending, mutate} = useMutation({
+        mutationFn: () => onUpdateSection(sectionid, "COMPLETE", ""),
+        onSuccess: (data) => {
+            toast(data.status == 200 ? "Success" : "Error", {
+                description: data.message
+            })
+        },
+        onSettled: async () => {
+            return await client.invalidateQueries({
+                queryKey: ["course-modules"]
+            })
+        }
+    })
+   return {data, mutate, isPending}
 }
