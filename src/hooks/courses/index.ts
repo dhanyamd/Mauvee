@@ -6,9 +6,10 @@ import { CreateCourseSchema } from "./schema"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { onGetGroupInfo } from "@/app/actions/groups"
 import { upload } from "@/lib/uploadcare"
-import { onCreateCourseModule, onCreateGroupCourse, onGetGroupCourses } from "@/app/actions/courses"
+import { onCreateCourseModule, onCreateGroupCourse, onCreateModuleSection, onGetCourseModules, onGetGroupCourses, onUpdateModule, onUpdateModuleSection } from "@/app/actions/courses"
 import { toast } from "sonner"
 import { v4 } from "uuid"
+import { usePathname } from "next/navigation"
 export const useCreateCourse = (groupid: string) => {
     const [onPrivacy, setOnPrivacy] = useState<string | undefined>("open")
     const buttonRef = useRef<HTMLButtonElement | null>(null)
@@ -129,4 +130,161 @@ export const useCreateModule = (courseId: string, groupid: string) => {
             moduleId: v4()
         })
         return {data, onCreateModule, isPending, variables}
+}
+
+export const useCourseModule = (courseId: string, groupid: string) => {
+    const triggerRef = useRef<HTMLButtonElement | null>(null)
+    const contentRef = useRef<HTMLAnchorElement | null>(null)
+    const inputRef = useRef<HTMLInputElement | null>(null)
+    const sectionInputRef = useRef<HTMLInputElement | null>(null)
+    const [edit, setEdit] = useState<boolean>(false)
+    const [editSection, setEditSection] = useState<boolean>(false)
+    const [activeSection, setActiveSection] = useState<string | undefined>(undefined)
+
+    const [moduleId, setModuleId] = useState<string | undefined>(undefined)
+    const {data} = useQuery({
+        queryKey: ["course-modules"],
+        queryFn: () => onGetCourseModules(courseId)
+    })
+
+    const {data: groupOwner} = useQuery({
+        queryKey: ["group-info"],
+        queryFn: () => onGetGroupInfo(groupid)
+    })
+
+    const pathname = usePathname()
+    const client = useQueryClient()
+
+    const {variables, isPending, mutate} = useMutation({
+        mutationFn: (data : {type: "NAME" | "DATA"; content: string}) => 
+            onUpdateModule(moduleId!, data.type, data.content),
+        onMutate: () => setEdit(false),
+        onSuccess: (data) => {
+            toast(data?.status === 200 ? "Success" : "Error", {
+                description: data?.message
+            })
+        },
+        onSettled: async () => {
+            return await client.invalidateQueries({
+                queryKey: ["course-modules"]
+            })
+        }
+    })
+    const {
+        mutate : updateSection,
+         isPending: sectionUpdatePending,
+         variables: updateVariables
+    } = useMutation({
+     mutationFn: (data: {type: "NAME"; content: string}) => 
+        onUpdateModuleSection(activeSection!, data.type, data.content),
+     onMutate: () => setEditSection(false),
+     onSuccess: (data) => {
+        toast(data?.status === 200 ? "Success" : "Error", {
+            description: data?.message
+        })
+     },
+     onSettled: async () => {
+        return await client.invalidateQueries({
+            queryKey: ["course-modules"]
+        })
+     },
+
+    })
+
+    const {
+        mutate : mutateSection,
+         variables: sectionVariables,
+         isPending: pendingSection
+    } = useMutation({
+     mutationFn: (data: {moduleid:string; sectionid: string}) => 
+        onCreateModuleSection(data.moduleid, data.sectionid),
+     onMutate: () => setEditSection(false),
+     onSuccess: (data) => {
+        toast(data?.status === 200 ? "Success" : "Error", {
+            description: data?.message
+        })
+     },
+     onSettled: async () => {
+        return await client.invalidateQueries({
+            queryKey: ["course-modules"]
+        })
+     },   
+    })
+
+    const onEditModuleName = (event: Event) => {
+        if(inputRef.current && triggerRef.current) {
+            if(
+                !inputRef.current.contains(event.target as Node | null) && 
+                !triggerRef.current.contains(event.target as Node | null)
+            ) {
+                if(inputRef.current.value) {
+                    mutate({
+                        type: "NAME",
+                        content: inputRef.current.value
+                    })
+                } else {
+                    setEdit(false)
+                }
+            }
+        }
+    }
+    const onEditSectionName = (event: Event) => {
+        if(sectionInputRef.current && contentRef.current) {
+            if(
+                !sectionInputRef.current.contains(event.target as Node | null) && 
+                !contentRef.current.contains(event.target as Node | null)
+            ) {
+                if(sectionInputRef.current.value) {
+                    updateSection({
+                        type: "NAME",
+                        content: sectionInputRef.current.value
+                    })
+                } else {
+                    setEdit(false)
+                }
+            }
+        }
+    }
+   useEffect(() => {
+    document.addEventListener("click", onEditModuleName, false)
+    return () => {
+        document.removeEventListener("click", onEditModuleName, false)
+    }
+   },[moduleId])
+
+   useEffect(() => {
+    document.addEventListener("click", onEditSectionName, false)
+    return () => {
+        document.removeEventListener("click", onEditSectionName, false)
+    }
+   },[activeSection])
+
+   const onEditModule = (id: string) => {
+    setEdit(true)
+    setModuleId(id)
+   }
+   const onEditSection = () => setEditSection(true)
+
+   return {
+    data,
+    activeSection,
+    onEditModule,
+    edit,
+    triggerRef,
+    inputRef,
+    variables,
+    isPending,
+    pathname,
+    groupOwner,
+    sectionVariables,
+    mutateSection,
+    pendingSection,
+    setActiveSection,
+    onEditSection,
+    sectionInputRef,
+    contentRef,
+    editSection,
+    sectionUpdatePending,
+    updateVariables,
+   }
 }

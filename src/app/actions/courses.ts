@@ -123,3 +123,84 @@ export const onCreateCourseModule = async (courseId: string, name: string, modul
         }
     }
 }
+
+export const onUpdateModule = async (
+    moduleId: string,
+    type: "NAME" | "DATA",
+    content: string
+) => {
+  try {
+    if(type === "NAME") {
+        const title = await client.module.update({
+            where: {
+                id: moduleId
+            },
+            data: {
+             title: content
+            }
+        })
+        if (title) {
+            return {status: 200, message: "Name successfully updated"}
+        }
+        return {
+            status: 404,
+            message: "Module not found"
+        }
+    }
+  } catch (error) {
+    return {status: 400, message :"Something went wrong"}
+  }
+}
+
+export const onUpdateModuleSection = async (sectionId: string, type: "NAME" | "COMPLETE", content: string) => {
+    try {
+        if (type === "NAME"){
+            await client.section.update({
+                where: {
+                    id: sectionId
+                },
+                data: {
+                    name : content
+                }
+            })
+            return {status: 200, message: "Section successfully updated"}
+        }
+        if(type === "COMPLETE"){
+            await client.section.update({
+                where: {
+                    id: sectionId
+                },
+                data: {
+                    complete: true
+                }
+            })
+            return {status : 200, message: "Section successfully completed"}
+        }
+    } catch (error) {
+        return {status: 400, message: "SOMETHING WENT WRONG"}
+    }
+}
+
+export const onCreateModuleSection = async (sectionId: string, moduleId: string) => {
+    try {    
+        const section = await client.module.update({
+            where: {
+                id: moduleId
+            },
+            data: {
+                section: {
+                    create: {
+                        id: sectionId
+                    }
+                }
+            }
+        })
+        if (section) {
+            return {status: 200, message: "New section created"}
+        }
+        return {status: 404, message: "Module not found"}
+    } catch (error) {
+        return {status: 400, message: "Oops! something went wrong"}
+    }
+}
+
