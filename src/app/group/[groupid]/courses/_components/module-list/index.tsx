@@ -1,16 +1,15 @@
-'use client'
+"use client"
 import { GlobalAccordion } from '@/app/globals/accordion'
 import { IconRenderer } from '@/components/icon-renderer'
 import { AccordionContent } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useCourseModule } from '@/hooks/courses'
-import { Empty } from '@/icons/empty'
-import { Check, Circle, Key, Plus } from 'lucide-react'
+import { Check, Circle, CircleCheck, Key, Plus } from 'lucide-react'
 import { v4 as uuid4, v4 } from 'uuid'
 import Link from 'next/link'
 import React from 'react'
-import { redirect } from 'next/navigation'
+import { CheckPurple } from '@/icons/check'
 type Props = {
     courseId: string,
     groupid: string
@@ -69,7 +68,7 @@ const CourseList = ({courseId, groupid}: Props) => {
                href={`/group/${groupid}/courses/${courseId}/${section.id}`}
                 >
                     
-                    {section.complete ? <Check/> : <Circle />}
+                    {section.complete ? <CheckPurple/> : <Circle />}
                     <IconRenderer 
                     icon={section.icon}
                     mode={

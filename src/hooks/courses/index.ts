@@ -1,15 +1,17 @@
+
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { CreateCourseSchema } from "./schema"
+import { CourseContentSchema, CreateCourseSchema } from "./schema"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { onGetGroupInfo } from "@/app/actions/groups"
 import { upload } from "@/lib/uploadcare"
-import { onCreateCourseModule, onCreateGroupCourse, onCreateModuleSection, onGetCourseModules, onGetGroupCourses, onGetSectionInfo, onUpdateModule, onUpdateSection } from "@/app/actions/courses"
+import { onCreateCourseModule, onCreateGroupCourse, onCreateModuleSection, onGetCourseModules, onGetGroupCourses, onGetSectionInfo, onUpdateCourseSectionContent, onUpdateModule, onUpdateSection } from "@/app/actions/courses"
 import { toast } from "sonner"
 import { v4 } from "uuid"
 import { usePathname } from "next/navigation"
+import { JSONContent } from "novel"
 export const useCreateCourse = (groupid: string) => {
     const [onPrivacy, setOnPrivacy] = useState<string | undefined>("open")
     const buttonRef = useRef<HTMLButtonElement | null>(null)
@@ -312,4 +314,100 @@ export const useSectionNavBar = (sectionid: string) => {
         }
     })
    return {data, mutate, isPending}
+}
+
+export const useCourseSectionInfo = (sectionId: string) => {
+    const {data} = useQuery({
+        queryKey: ["section-info"],
+        queryFn: () => onGetSectionInfo(sectionId)
+    })
+    return {data}
+}
+
+export const useCourseContent = (
+    sectionId: string,
+    description: string | null,
+    jsonDescription: string | null ,
+    htmlDescription: string | null
+) => {
+    const jsonContent = jsonDescription !== null ? JSON.parse(jsonDescription as string) : undefined
+  const [onJsonDescription, setJsonDescription] = useState<JSONContent | undefined>(jsonContent)
+  const [onDescription, setOnDescription] = useState<string | undefined>(description || undefined)
+  const [onHtmlDescription, setOnHtmlDescription] = useState<string | undefined>(htmlDescription || undefined)
+   
+  const editor = useRef<HTMLFormElement | null>(null)
+  const [onEditDescription, setOnEditDescription] = useState<boolean>(false) 
+ 
+  const {
+    register,
+    formState: {errors},
+    handleSubmit,
+    setValue
+  } = useForm<z.infer<typeof CourseContentSchema>>({
+    resolver: zodResolver(CourseContentSchema)
+  })
+
+  const onSetDescription = () => {
+    const JsonContent = JSON.stringify(onJsonDescription)
+    setValue("jsoncontent", JsonContent)
+    setValue("content", onDescription)
+    setValue("htmlcontent", onHtmlDescription)
+  }
+  useEffect(() => {
+    onSetDescription()
+    return () => {
+        onSetDescription()
+    }
+  }, [onJsonDescription, onDescription])
+
+ const onEditTextEditor = (event: Event) => {
+    if (editor.current) {
+        !editor.current.contains(event.target as Node | null)
+        ? setOnEditDescription(false)
+        : setOnEditDescription(true)
+    }
+ }
+
+  useEffect(() => {
+    document.addEventListener("click", onEditTextEditor, false)
+    return () => {
+        document.removeEventListener("click", onEditTextEditor, false)
+    }
+  },[])
+  const client = useQueryClient()
+  const {mutate, isPending} = useMutation({
+    mutationFn: (data: {values: z.infer<typeof CourseContentSchema>}) => 
+        onUpdateCourseSectionContent(
+            sectionId,
+            data.values.htmlcontent!,
+            data.values.jsoncontent!,
+            data.values.content!
+        ),
+        onSuccess: (data) => {
+            toast(data.status === 200 ? "Success" : "Error", {
+                description: data.message
+            })
+        },
+        onSettled: async () => {
+            return await client.invalidateQueries({
+                queryKey: ["section-info"]
+            })
+        }
+  })
+  const onUpdateContent = handleSubmit(async (values) => {
+    mutate({ values })
+  })
+  return {
+    errors,
+    onUpdateContent,
+    register,
+    setJsonDescription,
+    setOnDescription,
+    onJsonDescription,
+    onDescription,
+    onEditDescription,
+    setOnHtmlDescription,
+    editor,
+    isPending
+  }
 }

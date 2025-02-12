@@ -1,6 +1,8 @@
+"use client"
 import { Button } from '@/components/ui/button'
 import { useSectionNavBar } from '@/hooks/courses'
-import { Check } from 'lucide-react'
+import { CheckPurple } from '@/icons/check'
+import { CircleCheck } from 'lucide-react'
 import React from 'react'
 type Props = {
     sectionid : string
@@ -22,7 +24,7 @@ const SectionNavBar = ({sectionid} : Props) => {
         variant="outline"
         onClick={() => mutate()}
         >
-        <Check size={16}/>
+        <CircleCheck size={16}  />
         {isPending ? "Completed" : !data.section?.complete ? "Mark as complete" : "Completed"}
         </Button>
       </div>

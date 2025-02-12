@@ -21,3 +21,22 @@ export const CreateCourseSchema = z.object({
               .min(1, {message: "You need to pick a privacy setting"}),
     published: z.boolean()
 })
+
+export const CourseContentSchema = z.object({
+    content : z 
+              .string()
+            .min(100, {
+                message: "description must have atleast 100 characters"
+            })
+              .optional()
+              .or(z.literal("").transform(() => undefined)),
+    htmlcontent: z.string()
+                    .optional()
+                    .or(z.literal("").transform(() => undefined)),
+     jsoncontent : z.string()
+                    .min(100, {
+                        message: "description must have atleast 100 characters"
+                    })
+                    .optional()
+                    .or(z.literal("").transform(() => undefined))
+})
