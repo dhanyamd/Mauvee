@@ -243,6 +243,46 @@ export const onGetGroupSubscriptions = async (groupid: string) => {
   }
 }
 
+export const onGetAllUserMessages = async (receiverId: string) => {
+  try {
+    const sender = await onAuthenticatedUser();
+
+    const messages = await client.message.findMany({
+      where: {
+        OR: [
+          {
+            senderid: sender.id,
+            recieverId: receiverId,
+          },
+          {
+            senderid: receiverId,
+            recieverId: sender.id,
+          },
+        ],
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
+    });
+
+    if (messages) {
+      return {
+        status: 200,
+        messages,
+      };
+    }
+
+    return {
+      status: 404,
+      message: 'No messages found',
+    };
+  } catch (error) {
+    return {
+      status: 400,
+      message: 'An error occurred while fetching messages',
+    };
+  }
+};
 export const onGetAllGroupMembers = async(groupid : string) => {
   try {
    const user = await onAuthenticatedUser()
@@ -525,5 +565,23 @@ export const useJoinGroup = async(groupid : string) => {
     }
   } catch (error) {
     return {status : 404}
+  }
+}
+
+export const onGetUserFromMembership = async (membershipid: string) => {
+  try {
+    const member = await client.members.findUnique({
+      where: {
+        id: membershipid
+      },
+      select: {
+        User: true
+      }
+    })
+    if(member) {
+      return {status : 200, member}
+    }
+  } catch (error) {
+    return {status: 400}
   }
 }
