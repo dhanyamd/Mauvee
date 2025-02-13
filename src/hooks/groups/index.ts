@@ -1,5 +1,5 @@
 "use client"
-import { onGetExploreGroup, onGetGroupInfo, onSearchGroups, onUpdateGroupGallery, onUpDateGroupSettings } from "@/app/actions/groups"
+import { onGetAllGroupMembers, onGetExploreGroup, onGetGroupInfo, onSearchGroups, onUpdateGroupGallery, onUpDateGroupSettings } from "@/app/actions/groups"
 import { supabaseClient } from "@/lib/utils"
 import { onOnline } from "@/redux/slices/online-member-slice"
 import { GroupStateProps, onClearSearch, onSearch } from "@/redux/slices/search-slice"
@@ -14,7 +14,7 @@ import { set, z } from "zod"
 import { GroupSettingsSchema } from "@/components/forms/group-setttings/schema"
 import { toast } from "sonner"
 import { upload } from "@/lib/uploadcare"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { onClearList, onInfiniteScroll } from "@/redux/slices/infinite-scroll-slice"
 import { UpdateGallerySchema } from "@/components/forms/media-gallery/schema"
 export const useGroupChatOnline = (userid: string) => {
@@ -440,3 +440,12 @@ export const useExploreSlider = (query: string, paginate: number) => {
         isPending,
       }
     }
+export const useGroupChat = (groupid: string ) => {
+  const {data} = useQuery({
+    queryKey: ["member-chats"],
+    queryFn: () => onGetAllGroupMembers(groupid)
+  })
+
+  const pathname = usePathname()
+  return {data, pathname}
+}

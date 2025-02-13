@@ -46,6 +46,7 @@ const CourseList = ({courseId, groupid}: Props) => {
         editable={
             <Input 
              ref={inputRef}
+             onChange={() => onEditModule(module.id)}
              className='bg-themeBlack border-themeGray'            
             />
         }
@@ -54,6 +55,7 @@ const CourseList = ({courseId, groupid}: Props) => {
         key={module.id}
         title={isPending ? variables?.content! : module.title}
         >
+            {module.title}
         <AccordionContent className='flex flex-col gap-y-2 px-3'>
         {module.section.length ? (
             module.section.map((section) => (
@@ -75,7 +77,6 @@ const CourseList = ({courseId, groupid}: Props) => {
                         pathname.split("/").pop() === section.id ? "LIGHT" : "DARK"
                     }
                     />
-                  <Link href={`/group/${groupid}/courses/${courseId}`}>
                  {editSection && activeSection === section.id ? (
                     <Input 
                     ref={sectionInputRef}
@@ -87,8 +88,6 @@ const CourseList = ({courseId, groupid}: Props) => {
                     section.name
                  )} 
                  </Link>
-                   
-                   </Link>
               
             ))
         ) : (<></>)}
