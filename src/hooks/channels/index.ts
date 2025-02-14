@@ -1,4 +1,4 @@
-import { onUpdateChannelInfo, onDeleteChannel, onGetChannelInfo, onCreateChannelPost, onLikeChannelPost } from "@/app/actions/channel"
+import { onUpdateChannelInfo, onDeleteChannel, onGetChannelInfo, onCreateChannelPost, onLikeChannelPost, onCreateNewComment } from "@/app/actions/channel"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient, useMutation, useQuery, useMutationState } from "@tanstack/react-query"
 import { JSONContent } from "novel"
@@ -7,8 +7,9 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { z } from "zod"
 import { CreateChannelPost } from "./schema"
-import { v4 } from "uuid"
-import { onGetPostInfo } from "@/app/actions/groups"
+import { v4 as uuidv4, v4 } from "uuid"
+import { onGetCommentReplies, onGetPostComments, onGetPostInfo } from "@/app/actions/groups"
+import { CreateCommentSchema } from "@/app/globals/post-comment/schema"
 
    
   export const useChannelInfo = () => {
@@ -230,4 +231,70 @@ import { onGetPostInfo } from "@/app/actions/groups"
     queryFn: () => onGetPostInfo(postid)
   })
   return {data}
+ }
+ 
+ export const usePostComment = (postid: string) => {
+  const {
+    formState: {errors},
+    register,
+    handleSubmit,
+    setValue,
+    reset
+  } = useForm<z.infer<typeof CreateCommentSchema>>({
+    resolver: zodResolver(CreateCommentSchema)
+  })
+  const client = useQueryClient()
+
+  const {mutate, variables, isPending} = useMutation({
+    mutationFn: (data: {content: string; commentid: string}) => 
+      onCreateNewComment(postid, data.content, data.commentid),
+    onMutate: () => reset(),
+    onSuccess: (data) => 
+      toast(data?.status === 200 ? "Success" : "Error", {
+        description: data?.message
+      }),
+      onSettled: async () => {
+        return await client.invalidateQueries({
+          queryKey: ["post-comments"]
+        })
+      }
+  })
+const onCreateComment = handleSubmit(async (values) => 
+  mutate({
+    content: values.comment,
+    commentid: uuidv4()
+  })
+)
+return {register, errors, isPending, onCreateComment, variables}
+ }
+
+ export const useComments = (postid: string) => {
+  const {data} = useQuery({
+    queryKey: ["post-comments"],
+    queryFn: () => onGetPostComments(postid)
+  })
+  return {data}
+ }
+
+ export const useReply = () => {
+  const [onReply, setOnReply] = useState<{
+    comment?: string 
+    reply: boolean
+  }>({comment: undefined, reply: false})
+
+  const [activeComment, setActiveComment] = useState<string | undefined>(undefined)
+  const onSetReply = (commentid: string) => 
+    setOnReply((prev) => ({...prev, comment: commentid, reply: true}))
+
+  const onSetActiveComment = (id: string) => setActiveComment(id)
+  return {onReply, onSetReply, onSetActiveComment, activeComment}
+ }
+
+ export const useGetReplies = (commentid: string) => {
+  const {isFetching, data} = useQuery({
+    queryKey: ["comment-replies", commentid],
+    queryFn: () => onGetCommentReplies(commentid),
+    enabled: Boolean(commentid)
+  })
+  return {isFetching, data}
  }

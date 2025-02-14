@@ -678,3 +678,26 @@ export const onGetPostComments = async (postid: string) => {
     return {status: 400}
   }
 }
+
+export const onGetCommentReplies = async (commentid: string) => {
+  try {
+    const replies = await client.comment.findUnique({
+      where: {
+        id: commentid
+      },
+      select: {
+        reply: {
+          include : {
+            user: true
+          }
+        }
+      }
+    })
+    if(replies && replies.reply.length > 0) {
+      return {status: 200, replies: replies.reply}
+    }
+    return {status: 404, message: "No replies found"}
+  } catch (error) {
+    return {status: 400, message: "Oops something went wrong"}
+  }
+}
