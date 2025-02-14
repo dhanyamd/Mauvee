@@ -8,6 +8,7 @@ import { toast } from "sonner"
 import { z } from "zod"
 import { CreateChannelPost } from "./schema"
 import { v4 } from "uuid"
+import { onGetPostInfo } from "@/app/actions/groups"
 
    
   export const useChannelInfo = () => {
@@ -221,4 +222,12 @@ import { v4 } from "uuid"
     }
   })
   return {mutate, isPending}
+ }
+
+ export const useGetPost = (postid: string) => {
+  const {data} = useQuery({
+    queryKey: ["unique-post"],
+    queryFn: () => onGetPostInfo(postid)
+  })
+  return {data}
  }

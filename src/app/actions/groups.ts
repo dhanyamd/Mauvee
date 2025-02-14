@@ -249,23 +249,16 @@ export const onGetAllUserMessages = async (receiverId: string) => {
 
     const messages = await client.message.findMany({
       where: {
-        OR: [
-          {
-            senderid: sender.id,
-            recieverId: receiverId,
-          },
-          {
-            senderid: receiverId,
-            recieverId: sender.id,
-          },
-        ],
-      },
-      orderBy: {
-        createdAt: 'asc',
-      },
-    });
+        senderid: {
+          in: [sender.id!, receiverId]
+        },
+        recieverId: {
+          in: [sender.id!, receiverId]
+        }
+      }
+    })
 
-    if (messages) {
+    if (messages && messages.length>0) {
       return {
         status: 200,
         messages,
@@ -580,6 +573,106 @@ export const onGetUserFromMembership = async (membershipid: string) => {
     })
     if(member) {
       return {status : 200, member}
+    }
+  } catch (error) {
+    return {status: 400}
+  }
+}
+
+export const onSendMessage = async (
+  receieveid : string,
+  messageid: string,
+  message: string
+) => {
+  try {
+    const user = await onAuthenticatedUser()
+    const newMessage = await client.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        message: {
+          create: {
+            id: messageid,
+            recieverId: receieveid,
+            message
+          }
+        }
+      }
+    })
+    if(newMessage){
+      return {status: 200}
+    }
+  } catch (error) {
+    return {status: 400}
+  }
+}
+
+export const onGetPostInfo = async (postid: string) => {
+  try {
+    const user = await onAuthenticatedUser()
+    const post = await client.post.findUnique({
+      where: {
+        id: postid
+      },
+      include: {
+        channel: {
+          select: {
+            name: true
+          }
+        },
+        author: {
+          select: {
+            firstname: true,
+            lastname: true,
+            image: true
+          }
+        },
+        _count: {
+          select: {
+            likes: true,
+            comments: true
+          }
+        },
+        likes: {
+          where: {
+            userId: user.id!
+          },
+          select: {
+            userId: true,
+            id: true
+          }
+        },
+        comments: true
+      }
+    })
+    if(post) return {status: 200, post}
+    return {status: 404, message: "No posts found"}
+  } catch (error) {
+    return {status: 400, message: "Oops! Something went wrong"}
+  }
+}
+export const onGetPostComments = async (postid: string) => {
+  try {
+    const comments = await client.comment.findMany({
+      where: {
+        postId: postid,
+        replied: false
+      },
+      orderBy: {
+        createdAt: "desc"
+      },
+      include: {
+        user: true,
+        _count: {
+          select: {
+            reply: true
+          }
+        }
+      }
+    })
+    if(comments && comments.length > 0) {
+      return {status: 200, comments}
     }
   } catch (error) {
     return {status: 400}

@@ -216,3 +216,6 @@ const onSetDescriptions = () => {
   }
 }
 
+export const useChatWindow = (reciverId : string) => {
+  
+}
