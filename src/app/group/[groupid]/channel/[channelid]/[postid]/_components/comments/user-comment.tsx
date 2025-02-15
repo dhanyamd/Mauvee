@@ -1,4 +1,5 @@
 import { Loader } from "@/components/loader"
+import { PostReply } from "@/components/post-reply"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
 import { useGetReplies } from "@/hooks/channels"
@@ -103,7 +104,7 @@ replyCount,
      {reply?.comment === id && reply.reply && (
         <PostReply 
         postid={postid} 
-        commentid={id} 
+        commentId={id} 
         username={username}
         image={image}
         />

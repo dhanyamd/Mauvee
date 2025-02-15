@@ -1,4 +1,4 @@
-import { onUpdateChannelInfo, onDeleteChannel, onGetChannelInfo, onCreateChannelPost, onLikeChannelPost, onCreateNewComment } from "@/app/actions/channel"
+import { onUpdateChannelInfo, onDeleteChannel, onGetChannelInfo, onCreateChannelPost, onLikeChannelPost, onCreateNewComment, onCreateCommentReply } from "@/app/actions/channel"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useQueryClient, useMutation, useQuery, useMutationState } from "@tanstack/react-query"
 import { JSONContent } from "novel"
@@ -297,4 +297,23 @@ return {register, errors, isPending, onCreateComment, variables}
     enabled: Boolean(commentid)
   })
   return {isFetching, data}
+ }
+
+ export const usePostReply = (commentid: string, postid: string) => {
+  const {register, reset, handleSubmit} = useForm<z.infer<typeof CreateCommentSchema>>({
+    resolver: zodResolver(CreateCommentSchema)
+  })
+  const {mutate, variables, isPending} = useMutation({
+    mutationFn: (data: {comment: string; replyid: string}) => 
+      onCreateCommentReply(postid, commentid, data.comment, data.replyid),
+    onMutate: () => reset(),
+    onSuccess: (data) => {
+      return toast(data?.status === 200 ? "Success" : "Error", {
+        description: data?.message
+      })
+    }
+  })
+  const onCreateReply = handleSubmit(async (values) => 
+  mutate({comment: values.comment, replyid: v4()}))
+  return {onCreateReply, register, variables, isPending}
  }
