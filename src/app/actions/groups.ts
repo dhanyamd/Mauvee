@@ -716,7 +716,7 @@ export const onGetDomainConfig = async (groupId: string) => {
     if(domain && domain.domain) {
       //get config status of domain 
       const status = await axios.get(
-        `https://api.vercel.com/v10/domauns/${domain.domain}/config?teamId=${process.env.TEAM_ID_VERCEL}`, {
+        `https://api.vercel.com/v10/domains/${domain.domain}/config?teamId=${process.env.TEAM_ID_VERCEL}`, {
           headers: {
             Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN}`,
             "Content-Type" : "application/json"   
@@ -728,5 +728,43 @@ export const onGetDomainConfig = async (groupId: string) => {
     return {status: 404}
   } catch (error) {
     console.log(error)
+  }
+}
+
+export const onAddCustomDomain = async (groupid: string, domain : string) => {
+  try {
+    const addDomainHttpUrl =`https://api.vercel.com/v10/projects/${process.env.PROJECT_ID_VERCEL}/domains?teamId=${process.env.TEAM_ID_VERCEL}`
+    //we now insert domain into our vercel project
+    //we make an http request to vercel
+    const response = await axios.post(
+      addDomainHttpUrl,
+      {
+        name: domain,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.AUTH_BEARER_TOKEN}`,
+          "Content-Type" : "application/json"
+        }
+      }
+    )
+    if(response) {
+      const newDomain = await client.group.update({
+        where: {
+          id: groupid
+        },
+        data: {
+          domain
+        }
+      })
+      if(newDomain) {
+        return {
+          status: 200,
+          message: "Domain successfully added"
+        }
+      }
+    }
+  } catch (error) {
+    
   }
 }

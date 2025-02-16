@@ -1,10 +1,10 @@
 "use client"
-import { onGetAllGroupMembers, onGetExploreGroup, onGetGroupInfo, onSearchGroups, onUpdateGroupGallery, onUpDateGroupSettings } from "@/app/actions/groups"
+import { onAddCustomDomain, onGetAllGroupMembers, onGetDomainConfig, onGetExploreGroup, onGetGroupInfo, onSearchGroups, onUpdateGroupGallery, onUpDateGroupSettings } from "@/app/actions/groups"
 import { supabaseClient } from "@/lib/utils"
 import { onOnline } from "@/redux/slices/online-member-slice"
 import { GroupStateProps, onClearSearch, onSearch } from "@/redux/slices/search-slice"
 import { AppDispatch } from "@/redux/store"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import React, { useEffect, useLayoutEffect, useState } from "react"
 import { useDispatch } from "react-redux"
 import {JSONContent} from "novel"
@@ -17,6 +17,7 @@ import { upload } from "@/lib/uploadcare"
 import { usePathname, useRouter } from "next/navigation"
 import { onClearList, onInfiniteScroll } from "@/redux/slices/infinite-scroll-slice"
 import { UpdateGallerySchema } from "@/components/forms/media-gallery/schema"
+import { AddCustomDomainSChema } from "@/components/domain/schema"
 export const useGroupChatOnline = (userid: string) => {
     const dispatch: AppDispatch = useDispatch()
   
@@ -448,4 +449,43 @@ export const useGroupChat = (groupid: string ) => {
 
   const pathname = usePathname()
   return {data, pathname}
+}
+
+export const useCustomDomain = (groupid: string) => {
+  const {
+    handleSubmit,
+    register,
+    formState: {errors},
+    reset,
+   } = useForm<z.infer<typeof AddCustomDomainSChema>>({
+     resolver: zodResolver(AddCustomDomainSChema)
+   })
+  const client = useQueryClient()
+  const {data} = useQuery({
+    queryKey: ["domain-config"],
+    queryFn: () => onGetDomainConfig(groupid)
+  })
+  const {mutate, isPending} = useMutation({
+    mutationFn: (data : {domain: string}) => 
+       onAddCustomDomain(groupid, data.domain),
+    onMutate: reset,
+    onSuccess: (data) => {
+      return toast(data?.status === 200 ? "Success" : "Error", {
+        description: data?.message
+      })
+    },
+    onSettled: async () => {
+      return await client.invalidateQueries({
+        queryKey: ["domain-config"]
+      })
+    }
+  })
+  const onAddDomain = handleSubmit(async (values) => mutate(values))
+  return {
+    onAddDomain,
+    isPending,
+    register,
+    errors,
+    data
+  }
 }

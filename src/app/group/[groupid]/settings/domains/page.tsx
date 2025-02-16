@@ -1,4 +1,5 @@
 import { onGetDomainConfig } from '@/app/actions/groups'
+import { CustomDomainForm } from '@/components/domain'
 import { Card, CardDescription, CardTitle } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
@@ -19,6 +20,7 @@ const DomainConfigPage = async ({params} : Props) => {
     <CardDescription className='text-themeTextGray'>
     Create and share an invitation link for your members{" "}
     </CardDescription>
+    <CustomDomainForm groupid={params.groupid}/>
     </Card>
     <Card className='border-themeGray bg-[#1A1A1D] p-5'>
     <CardTitle className='text-3xl'>Manual Config</CardTitle>
