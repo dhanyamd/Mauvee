@@ -1,3 +1,4 @@
+"use client"
 import { NoResult } from '@/app/globals/search/no-result'
 import React from 'react'
 import PostAuthor from '../../../_components/post-feed/post-author'

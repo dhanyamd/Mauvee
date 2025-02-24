@@ -29,25 +29,26 @@ await client.prefetchQuery({
     queryFn : () => onGetGroupInfo(params?.groupid)
 })
   return (
-   <HydrationBoundary state={dehydrate(client)}>
-   <div className='grid lg:grid-cols-4 grid-cols-1 w-full flex-1 h-0 gap-x-5 px-5'>
-<div className='col-span-1 lg:inline relative hidden py-5'>
-<LeaderBoard light/>
-</div>
-<div className='lg:col-span-2 flex flex-col gap-y-5 py-5 '>
-  <Menu orientation='desktop'/>
-<CreateNewPost 
-userImage={user?.imageUrl!}
-channelid={params.channelid}
- username={user?.firstName!}
-/>
-<PostFeed channelid={params.channelid} userid={authUser.id!}/>
-</div>
-<div className='col-span-1 hidden lg:inline relative py-5'>
-<GroupSideWidget light/>
-</div>
-   </div>
-   </HydrationBoundary>
+    <HydrationBoundary state={dehydrate(client)}>
+    <div className="grid lg:grid-cols-4 grid-cols-1 w-full flex-1 h-0 gap-x-5 px-5 s">
+      <div className="col-span-1 lg:inline relative hidden py-5">
+        <LeaderBoard light />
+      </div>
+      <div className="lg:col-span-2 flex flex-col gap-y-5 py-5">
+        <Menu orientation="desktop" />
+        <CreateNewPost
+          userImage={user?.imageUrl!}
+          channelid={params.channelid}
+          username={user?.firstName!}
+        />
+
+        <PostFeed channelid={params.channelid} userid={authUser.id!} />
+      </div>
+      <div className="col-span-1 hidden lg:inline relative py-5">
+        <GroupSideWidget light />
+      </div>
+    </div>
+  </HydrationBoundary>
   )
 }
 

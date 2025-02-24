@@ -15,7 +15,7 @@ const PostCommentForm = ({
     image,
     username
 }: PostCommentFormProps) => {
-    const {register, isPending,onCreateComment, variables} = usePostComment(postid)
+    const {register, isPending, onCreateComment, variables} = usePostComment(postid)
   return (
     <div className='flex flex-col gap-y-5'>
       <form
