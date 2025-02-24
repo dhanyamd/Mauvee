@@ -4,6 +4,8 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
 import { User } from 'lucide-react'
 import React from 'react'
+import { ChatWindow } from '../_components/chat'
+import { HuddlesForm } from '@/components/forms/huddles-form'
 
 const MemberChatPage = async ({params} : {params: {chatid: string}}) => {
     const query = new QueryClient()
@@ -30,7 +32,9 @@ const MemberChatPage = async ({params} : {params: {chatid: string}}) => {
        </h3>
        </div>
        </div>
-        </div>
+       <ChatWindow userid={user.id!} receiverid={member?.member?.User?.id!} />
+       <HuddlesForm recieverid={member?.member?.User?.id!} />
+       </div>
 
     </HydrationBoundary>
   )

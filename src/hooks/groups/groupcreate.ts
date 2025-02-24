@@ -1,4 +1,4 @@
-import { onCreateNewGroup, onUpDateGroupSettings } from "@/app/actions/groups"
+import { onCreateNewGroup, onGetAllUserMessages, onUpDateGroupSettings } from "@/app/actions/groups"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { CreateGroupSchema } from "../schema"
@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { toast } from "sonner"
 import { z } from "zod"
-import { useMutation } from "@tanstack/react-query"
-import { validateURLString } from "@/lib/utils"
+import { useMutation, useQuery } from "@tanstack/react-query"
+import { supabaseClient, validateURLString } from "@/lib/utils"
 import { JSONContent } from "novel"
 import { GroupSettingsSchema } from "@/components/forms/group-setttings/schema"
+import { AppDispatch } from "@/redux/store"
+import { useDispatch } from "react-redux"
 
 export const useGroup = async(
     userId: string,
@@ -216,6 +218,62 @@ const onSetDescriptions = () => {
   }
 }
 
-export const useChatWindow = (reciverId : string) => {
-  
+export const useChatWindow = (recieverid: string) => {
+  const { data, isFetched } = useQuery({
+    queryKey: ["user-messages"],
+    queryFn: () => onGetAllUserMessages(recieverid),
+  })
+
+  const messageWindowRef = useRef<HTMLDivElement | null>(null)
+
+  const onScrollToBottom = () => {
+    messageWindowRef.current?.scroll({
+      top: messageWindowRef.current.scrollHeight,
+      left: 0,
+      behavior: "smooth",
+    })
+  }
+
+  useEffect(() => {
+    supabaseClient
+      .channel("table-db-changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "Message",
+        },
+        async (payload) => {
+          dispatch(
+            onChat({
+              chat: [
+                ...(payload.new as {
+                  id: string
+                  message: string
+                  createdAt: Date
+                  senderid: string | null
+                  recieverId: string | null
+                }[]),
+              ],
+            }),
+          )
+        },
+      )
+      .subscribe()
+  }, [])
+
+  useEffect(() => {
+    onScrollToBottom()
+  }, [messageWindowRef])
+
+  const dispatch: AppDispatch = useDispatch()
+
+  if (isFetched && data?.messages) dispatch(onChat({ chat: data.messages }))
+
+  return { messageWindowRef }
+}
+
+function onChat(arg0: { chat: { id: string; message: string; createdAt: Date; senderid: string | null; recieverId: string | null }[] }): any {
+  throw new Error("Function not implemented.")
 }

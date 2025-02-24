@@ -1,7 +1,8 @@
 "use client"
 
-/*import { useAppSelector } from "@/redux/store"
-import ChatBubble from "../ChatBubble"
+import { useAppSelector } from "@/redux/store"
+import { useChatWindow } from "@/hooks/groups/groupcreate"
+import { ChatBubble } from "../ChatBubble"
 
 type ChatWindowProps = {
     receiverid: string 
@@ -20,4 +21,4 @@ export const ChatWindow = ({receiverid, userid} : ChatWindowProps) => {
    ))}
     </div>
    )
-}*/
+}

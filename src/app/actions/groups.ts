@@ -2,17 +2,46 @@
 import { CreateGroupSchema } from "@/hooks/schema"
 import { client } from "@/lib/prisma"
 import axios from "axios"
-import { v4 as uuidv4 } from "uuid"
+import { v4 as uuidv4, v4 } from "uuid"
 import { z } from "zod"
 import { onAuthenticatedUser } from "./auth"
 import { revalidatePath } from "next/cache"
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { AppDispatch } from "@/redux/store"
 import { useDispatch } from "react-redux"
 import { useEffect, useLayoutEffect, useState } from "react"
 import { onClearList, onInfiniteScroll } from "@/redux/slices/infinite-scroll-slice"
 import { GroupStateProps } from "@/redux/slices/search-slice"
 import { currentUser } from "@clerk/nextjs/server"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { SendNewMessageSchema } from "@/components/forms/huddles-form/schema"
+
+
+
+export const useSendMessage = async (recieverId: string) => {
+  const { register, reset, handleSubmit } = useForm<
+    z.infer<typeof SendNewMessageSchema>
+  >({
+    resolver: zodResolver(SendNewMessageSchema),
+  })
+
+  const { mutate } = useMutation({
+    mutationKey: ["send-new-message"],
+    mutationFn: (data: { messageid: string; message: string }) =>
+      onSendMessage(recieverId, data.messageid, data.message),
+    onMutate: () => reset(),
+    onSuccess: () => {
+      return
+    },
+  })
+
+  const onSendNewMessage = handleSubmit(async (values) =>
+    mutate({ messageid: v4(), message: values.message }),
+  )
+
+  return { onSendNewMessage, register }
+}
 
 export const onGetAffiliateInfo = async(id : string) => {
     try {

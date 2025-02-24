@@ -1,29 +1,36 @@
-import React from 'react';
+import { cn } from "@/lib/utils"
 
-type ChatBubbleProps = {
-  id: string;
-  senderId: string;
-  receiverId: string;
-  message: string;
-  createdAt: string;
-  userid: string;
-};
+type ChatBubbeProps = {
+  senderid: string | null
+  createdAt: Date
+  message: string
+  userid: string
+}
 
-const ChatBubble: React.FC<ChatBubbleProps> = ({ senderId, message, createdAt, userid }) => {
-  const isSender = senderId === userid;
-
+export const ChatBubble = ({
+  senderid,
+  createdAt,
+  message,
+  userid,
+}: ChatBubbeProps) => {
   return (
-    <div className={`flex ${isSender ? 'justify-end' : 'justify-start'} mb-2`}>
-      <div
-        className={`max-w-xs px-4 py-2 rounded-lg ${
-          isSender ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'
-        }`}
-      >
-        <p>{message}</p>
-        <span className="text-xs text-gray-600">{new Date(createdAt).toLocaleTimeString()}</span>
-      </div>
+    <div
+      className={cn(
+        senderid === userid
+          ? "self-end bg-themeBlack max-w-[60%] min-w-[15%]"
+          : "self-start bg-themeGray max-w-[60%] min-w-[15%]",
+        "px-4 py-2 rounded-xl text-xl flex flex-col",
+      )}
+    >
+      <p>{message}</p>
+      <p className={cn("text-xs text-themeTextGray")}>
+        {createdAt && (
+          <>
+            {createdAt.getHours()} {createdAt.getMinutes()}{" "}
+            {createdAt.getHours() > 12 ? "pm" : "am"}
+          </>
+        )}
+      </p>
     </div>
-  );
-};
-
-export default ChatBubble;
+  )
+}

@@ -1,7 +1,7 @@
 import GlassSheet from '@/app/globals/glass-sheet'
 import { Menu } from 'lucide-react'
 import React from 'react'
-import GroupChatMenu from './_components/chat-menu'
+import {GroupChatMenu} from './_components/chat-menu'
 
 type HuddlesLayoutProps = {
     children: React.ReactNode 
