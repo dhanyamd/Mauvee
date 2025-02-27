@@ -7,16 +7,10 @@ import { z } from "zod"
 import { onAuthenticatedUser } from "./auth"
 import { revalidatePath } from "next/cache"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { AppDispatch } from "@/redux/store"
-import { useDispatch } from "react-redux"
-import { useEffect, useLayoutEffect, useState } from "react"
-import { onClearList, onInfiniteScroll } from "@/redux/slices/infinite-scroll-slice"
-import { GroupStateProps } from "@/redux/slices/search-slice"
-import { currentUser } from "@clerk/nextjs/server"
-import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SendNewMessageSchema } from "@/components/forms/huddles-form/schema"
-
+//@ts-ignore
+import  {useForm}  from "react-hook-form"
 
 
 export const useSendMessage = async (recieverId: string) => {
