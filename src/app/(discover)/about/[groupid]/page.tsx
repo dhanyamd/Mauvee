@@ -1,16 +1,16 @@
 import { onAuthenticatedUser } from '@/app/actions/auth'
 import { onGetGroupInfo } from '@/app/actions/groups'
-import { onGetActiveSubscription } from '@/app/actions/payment'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
 import React from 'react'
-import AboutGroup from '../_components/about'
 import GroupSideWidget from '@/app/globals/group-side-widget'
-type Props = {
+import AboutGroup from '../_components/about'
+//@ts-ignore
+type GroupidProps = {
     params : {
         groupid : string
     }
 }
-const Page = async({params} : Props) => {
+const Page = async({ params } : GroupidProps) => {
     const query = new QueryClient()
 
     await query.prefetchQuery({
@@ -18,10 +18,6 @@ const Page = async({params} : Props) => {
         queryFn: () => onGetGroupInfo(params.groupid)
     })
 
-    /*await query.prefetchQuery({
-        queryKey: ["active-subscription"],
-        queryFn: () => onGetActiveSubscription(params.groupid)
-    })*/
     const userid = await onAuthenticatedUser()
   return (
     <HydrationBoundary state={dehydrate(query)}>

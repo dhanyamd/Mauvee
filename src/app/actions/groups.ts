@@ -10,8 +10,7 @@ import { revalidatePath } from "next/cache"
 import { useMutation } from "@tanstack/react-query"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SendNewMessageSchema } from "@/components/forms/huddles-form/schema"
-import  {useForm}  from 'react-hook-form';
-
+import { useForm } from "react-hook-form"
 
 export const useSendMessage = async (recieverId: string) => {
   const { register, reset, handleSubmit } = useForm<
