@@ -31,7 +31,7 @@ export const GroupChatMenu = ({ groupid }: GroupChatMenuProps) => {
                   m.id == member.userId && (
                     <span
                       key={m.id}
-                      className="absolute bottom-0 right-0 z-50 w-2 h-2 rounded-full bg-green-600"
+                      className="absolute bottom-0 right-0 z-50 w-2 h-2 rounded-full bg-green-500"
                     ></span>
                   ),
               )}
