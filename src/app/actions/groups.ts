@@ -59,7 +59,7 @@ export const onGetAffiliateInfo = async(id : string) => {
                             image : true,
                             id : true,
                             //TODO: later comment this below
-                            stripeId : true
+                            //stripeId : true
                         }
                     }
                 }

@@ -132,12 +132,3 @@ import { JSX } from "react"
     },
   ]
   
-  type IntegrationsListItemProps = {
-    id: string
-    name: "stripe"
-    logo: string
-    description: string
-    title: string
-    modalDescription: string
-  }
-  

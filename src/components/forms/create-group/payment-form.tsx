@@ -1,5 +1,5 @@
 "use client"
-
+//CODE NOT IMPORTED AS OF NOW! WILL CHANGE IN FUTURE
 import { onCreateNewGroup } from "@/app/actions/groups"
 import { FormGenerator } from "@/components/form-generator"
 import { Loader } from "@/components/loader"
@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { useCreateGroup } from "@/hooks/payment"
 
 import { ErrorMessage } from "@hookform/error-message"
-import { CardElement } from "@stripe/react-stripe-js"
 import dynamic from "next/dynamic"
 import Link from "next/link"
 
@@ -67,20 +66,7 @@ const PaymentForm = ({ userId, stripeId }: Props) => {
           />
         </div>
         <div className="px-7 my-3">
-          <CardElement
-            options={{
-              style: {
-                base: {
-                  fontSize: "16px",
-                  color: "#B4B0AE",
-                  "::placeholder": {
-                    color: "#B4B0AE",
-                  },
-                },
-              },
-            }}
-            className="bg-themeBlack border-[1px] border-themeGray outline-none rounded-lg p-3"
-          />
+        
         </div>
         <div className="px-7 flex flex-col gap-5">
           <p className="text-sm text-themeTextGray">
