@@ -1,7 +1,7 @@
 "use client"
-import { useSendMessage } from "@/app/actions/groups"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { useSendMessage } from "@/hooks/groups"
 
 import { Mic, Send } from "lucide-react"
 

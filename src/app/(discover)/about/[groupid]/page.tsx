@@ -6,16 +6,14 @@ import GroupSideWidget from '@/app/globals/group-side-widget'
 import AboutGroup from '../_components/about'
 //@ts-ignore
 type GroupidProps = {
-    params : {
-        groupid : string
-    }
+  groupid : string
 }
-const Page = async({ params } : GroupidProps) => {
+const Page = async({ groupid } : GroupidProps) => {
     const query = new QueryClient()
 
     await query.prefetchQuery({
         queryKey: ["about-group-info"],
-        queryFn: () => onGetGroupInfo(params.groupid)
+        queryFn: () => onGetGroupInfo(groupid)
     })
 
     const userid = await onAuthenticatedUser()
@@ -23,10 +21,10 @@ const Page = async({ params } : GroupidProps) => {
     <HydrationBoundary state={dehydrate(query)}>
    <div className='pt-36 pb-10 container grid grid-cols-1 lg:grid-cols-3 gap-x-10'>
    <div className='col-span-1 lg:col-span-2'>
-   <AboutGroup userid={userid.id!} groupid={params.groupid}/>
+   <AboutGroup userid={userid.id!} groupid={groupid}/>
    </div>
    <div className='col-span-1 relative'>
-   <GroupSideWidget groupid={params.groupid} userid={userid.id}/>
+   <GroupSideWidget groupid={groupid} userid={userid.id}/>
    </div>
    </div>
     </HydrationBoundary>

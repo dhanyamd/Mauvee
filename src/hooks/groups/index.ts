@@ -53,6 +53,7 @@ export const useGroupChatOnline = (userid: string) => {
       }
     }, [])
   }
+  
   export const useSendMessage = async (recieverId: string) => {
     const { register, reset, handleSubmit } = useForm<
       z.infer<typeof SendNewMessageSchema>
@@ -76,6 +77,7 @@ export const useGroupChatOnline = (userid: string) => {
   
     return { onSendNewMessage, register }
   }
+
   export const useSearch = (search : "GROUPS" | "POSTS") => {
    const [query, setQuery] = useState<string>("")
    const [debounce, setDebounce] = useState<string>("")
