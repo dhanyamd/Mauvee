@@ -1,3 +1,4 @@
+{/**@ts-ignore */}
 import { onAuthenticatedUser } from '@/app/actions/auth'
 import { onGetGroupInfo } from '@/app/actions/groups'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
@@ -8,7 +9,7 @@ import AboutGroup from '../_components/about'
 type GroupidProps = {
   groupid : string
 }
-const Page = async({ groupid } : GroupidProps) => {
+export const GroupIdPage = async({ groupid } : GroupidProps) => {
     const query = new QueryClient()
 
     await query.prefetchQuery({
@@ -31,4 +32,4 @@ const Page = async({ groupid } : GroupidProps) => {
   )
 }
 
-export default Page
+
