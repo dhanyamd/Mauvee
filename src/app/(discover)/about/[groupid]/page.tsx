@@ -1,18 +1,18 @@
-{/**@ts-ignore */}
 import { onAuthenticatedUser } from '@/app/actions/auth'
 import { onGetGroupInfo } from '@/app/actions/groups'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
 import React from 'react'
 import GroupSideWidget from '@/app/globals/group-side-widget'
 import AboutGroup from '../_components/about'
+import { NextPage } from "next"
 
-type GroupidProps = {
+type GroupidProps = NextPage & {
   params: {
     groupid: string
   }
 }
 
-const GroupIdPage = async({ params }: GroupidProps) => {
+const Page = async({ params }: GroupidProps) => {
     const { groupid } = params
     const query = new QueryClient()
 
@@ -36,5 +36,5 @@ const GroupIdPage = async({ params }: GroupidProps) => {
   )
 }
 
-export default GroupIdPage
+export default Page
 
