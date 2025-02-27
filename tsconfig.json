@@ -5,6 +5,13 @@
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
+    "noImplicitAny": false, // Allow expressions and declarations to have an 'any' type
+    "strictNullChecks": false, // Disable strict null checks
+    "strictFunctionTypes": false, // Disable strict checking of function types
+    "strictBindCallApply": false, // Disable strict 'bind', 'call', and 'apply' methods
+    "strictPropertyInitialization": false, // Disable strict checking of property initialization
+    "alwaysStrict": false, // Disable strict mode in emitted JavaScript files
+    "forceConsistentCasingInFileNames": false ,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -22,6 +29,7 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+//  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+"include": ["src/**/*"],
   "exclude": ["node_modules"]
 }

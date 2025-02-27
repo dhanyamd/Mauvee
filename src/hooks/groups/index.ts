@@ -1,5 +1,5 @@
 "use client"
-import { onAddCustomDomain, onGetAllGroupMembers, onGetDomainConfig, onGetExploreGroup, onGetGroupInfo, onSearchGroups, onUpdateGroupGallery, onUpDateGroupSettings } from "@/app/actions/groups"
+import { onAddCustomDomain, onGetAllGroupMembers, onGetDomainConfig, onGetExploreGroup, onGetGroupInfo, onSearchGroups, onSendMessage, onUpdateGroupGallery, onUpDateGroupSettings } from "@/app/actions/groups"
 import { supabaseClient } from "@/lib/utils"
 import { onOnline } from "@/redux/slices/online-member-slice"
 import { GroupStateProps, onClearSearch, onSearch } from "@/redux/slices/search-slice"
@@ -18,6 +18,8 @@ import { usePathname, useRouter } from "next/navigation"
 import { onClearList, onInfiniteScroll } from "@/redux/slices/infinite-scroll-slice"
 import { UpdateGallerySchema } from "@/components/forms/media-gallery/schema"
 import { AddCustomDomainSChema } from "@/components/domain/schema"
+import { v4 } from "uuid"
+import { SendNewMessageSchema } from "@/components/forms/huddles-form/schema"
 export const useGroupChatOnline = (userid: string) => {
     const dispatch: AppDispatch = useDispatch()
   
@@ -51,7 +53,29 @@ export const useGroupChatOnline = (userid: string) => {
       }
     }, [])
   }
-
+  export const useSendMessage = async (recieverId: string) => {
+    const { register, reset, handleSubmit } = useForm<
+      z.infer<typeof SendNewMessageSchema>
+    >({
+      resolver: zodResolver(SendNewMessageSchema),
+    })
+  
+    const { mutate } = useMutation({
+      mutationKey: ["send-new-message"],
+      mutationFn: (data: { messageid: string; message: string }) =>
+        onSendMessage(recieverId, data.messageid, data.message),
+      onMutate: () => reset(),
+      onSuccess: () => {
+        return
+      },
+    })
+  
+    const onSendNewMessage = handleSubmit(async (values) =>
+      mutate({ messageid: v4(), message: values.message }),
+    )
+  
+    return { onSendNewMessage, register }
+  }
   export const useSearch = (search : "GROUPS" | "POSTS") => {
    const [query, setQuery] = useState<string>("")
    const [debounce, setDebounce] = useState<string>("")

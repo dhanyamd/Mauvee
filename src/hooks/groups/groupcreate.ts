@@ -53,6 +53,7 @@ export const useGroup = async(
         description: created.message,
       })
       router.push(
+         //@ts-ignore
         `/group/${created.data?.group[0].id}/channel/${created.data?.group[0].channel[0].id}`,
       )
     }

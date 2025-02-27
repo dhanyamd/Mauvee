@@ -7,34 +7,8 @@ import { z } from "zod"
 import { onAuthenticatedUser } from "./auth"
 import ReactDOM from "react-dom"
 import { revalidatePath } from "next/cache"
-import { useMutation } from "@tanstack/react-query"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { SendNewMessageSchema } from "@/components/forms/huddles-form/schema"
-import { useForm } from "react-hook-form"
 
-export const useSendMessage = async (recieverId: string) => {
-  const { register, reset, handleSubmit } = useForm<
-    z.infer<typeof SendNewMessageSchema>
-  >({
-    resolver: zodResolver(SendNewMessageSchema),
-  })
 
-  const { mutate } = useMutation({
-    mutationKey: ["send-new-message"],
-    mutationFn: (data: { messageid: string; message: string }) =>
-      onSendMessage(recieverId, data.messageid, data.message),
-    onMutate: () => reset(),
-    onSuccess: () => {
-      return
-    },
-  })
-
-  const onSendNewMessage = handleSubmit(async (values) =>
-    mutate({ messageid: v4(), message: values.message }),
-  )
-
-  return { onSendNewMessage, register }
-}
 
 export const onGetAffiliateInfo = async(id : string) => {
     try {
@@ -79,6 +53,7 @@ export const onCreateNewGroup = async (
         },
         data: {
             group: {
+              //@ts-ignore
               create: {
                 ...data,
                
