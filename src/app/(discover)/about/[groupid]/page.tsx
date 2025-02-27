@@ -5,11 +5,15 @@ import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query
 import React from 'react'
 import GroupSideWidget from '@/app/globals/group-side-widget'
 import AboutGroup from '../_components/about'
-//@ts-ignore
+
 type GroupidProps = {
-  groupid : string
+  params: {
+    groupid: string
+  }
 }
-export const GroupIdPage = async({ groupid } : GroupidProps) => {
+
+const GroupIdPage = async({ params }: GroupidProps) => {
+    const { groupid } = params
     const query = new QueryClient()
 
     await query.prefetchQuery({
@@ -32,4 +36,5 @@ export const GroupIdPage = async({ groupid } : GroupidProps) => {
   )
 }
 
+export default GroupIdPage
 
