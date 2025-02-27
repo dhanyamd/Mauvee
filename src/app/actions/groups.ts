@@ -5,12 +5,12 @@ import axios from "axios"
 import { v4 as uuidv4, v4 } from "uuid"
 import { z } from "zod"
 import { onAuthenticatedUser } from "./auth"
+import ReactDOM from "react-dom"
 import { revalidatePath } from "next/cache"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SendNewMessageSchema } from "@/components/forms/huddles-form/schema"
-//@ts-ignore
-import  {useForm}  from "react-hook-form"
+import  {useForm}  from "react-hook-form";
 
 
 export const useSendMessage = async (recieverId: string) => {
