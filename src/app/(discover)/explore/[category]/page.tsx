@@ -3,11 +3,11 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import ExplorePageContent from "../_components/explore-content"
 
 
-const ExploreCatgeoryPage = async ({
+export default async function CategoryPage ({
     params,
 } : {
     params : {category : string}
-}) => {
+}){
     const query = new QueryClient()
 
     await query.prefetchQuery({
@@ -22,4 +22,3 @@ const ExploreCatgeoryPage = async ({
     )
 }
 
-export default ExploreCatgeoryPage
