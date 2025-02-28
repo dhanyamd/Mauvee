@@ -6,14 +6,13 @@ import GroupSideWidget from '@/app/globals/group-side-widget'
 import AboutGroup from '../_components/about'
 import { NextPage } from "next"
 
-type GroupidProps = NextPage & {
-  params: {
-    groupid: string
-  }
-}
+type GroupidProps = { 
+    params: Promise<{ groupid: string; }>; 
+  };
 
-const Page = async({ params }: GroupidProps) => {
-    const { groupid } = params
+
+export default async function GroupIdPage({ params }: GroupidProps){
+    const { groupid } =  await params;
     const query = new QueryClient()
 
     await query.prefetchQuery({
@@ -36,5 +35,4 @@ const Page = async({ params }: GroupidProps) => {
   )
 }
 
-export default Page
 
