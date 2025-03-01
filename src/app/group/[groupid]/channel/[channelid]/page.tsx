@@ -9,24 +9,25 @@ import CreateNewPost from './_components/create-post'
 import Menu from '@/app/(landing)/_components/navbar/menu'
 import GroupSideWidget from '@/app/globals/group-side-widget'
 import PostFeed from './_components/post-feed'
+//    params: Promise<{ groupid: string; }>; 
 
 type Props = {
-    params : {channelid : string, groupid: string}
+    params : Promise<{ channelid : string, groupid: string}>
  }
-
-const GroupChannelPage = async({params } : Props) => {
-const client = new QueryClient()
-const user = await currentUser()
-const authUser = await onAuthenticatedUser()
+export default async function GroupChannelPage({ params }: Props) {
+  const { channelid, groupid } = await params; // Await the Promise to get the values
+  const client = new QueryClient();
+  const user = await currentUser();
+  const authUser = await onAuthenticatedUser();
 
 await client.prefetchQuery({
     queryKey : ["channel-info"],
-    queryFn : () => onGetChannelInfo(params?.channelid)
+    queryFn : () => onGetChannelInfo(channelid)
 })
 
 await client.prefetchQuery({
     queryKey : ["about-group-info"],
-    queryFn : () => onGetGroupInfo(params?.groupid)
+    queryFn : () => onGetGroupInfo(groupid)
 })
   return (
     <HydrationBoundary state={dehydrate(client)}>
@@ -38,11 +39,11 @@ await client.prefetchQuery({
         <Menu orientation="desktop" />
         <CreateNewPost
           userImage={user?.imageUrl!}
-          channelid={params.channelid}
+          channelid={channelid}
           username={user?.firstName!}
         />
 
-        <PostFeed channelid={params.channelid} userid={authUser.id!} />
+        <PostFeed channelid={channelid} userid={authUser.id!} />
       </div>
       <div className="col-span-1 hidden lg:inline relative py-5">
         <GroupSideWidget light />
@@ -52,4 +53,3 @@ await client.prefetchQuery({
   )
 }
 
-export default GroupChannelPage
