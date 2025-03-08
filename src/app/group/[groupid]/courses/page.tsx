@@ -5,26 +5,25 @@ import React from 'react'
 import CourseList from './_components'
 
 type Props = {
-    params : {
+    params : Promise<{
         groupid: string
-    }
+    }>
 }
 
-const CoursePage = async ({params} : Props) => {
+export default async function CoursePage ({ params } : Props) {
     const client = new QueryClient()
-
+    const { groupid } = await params;
     await client.prefetchQuery({
         queryKey: ["group-courses"],
-        queryFn: () => onGetGroupCourses(params.groupid)
+        queryFn: () => onGetGroupCourses(groupid)
     })
   return (
     <HydrationBoundary state={dehydrate(client)}>
    <div className='container grid lg:grid-cols-2 2xl:grid-cols-3 py-10 gap-5'>
-   <CourseCreate groupid={params.groupid}/>
-   <CourseList groupid={params.groupid}/>
+   <CourseCreate groupid={groupid}/>
+   <CourseList groupid={groupid}/>
    </div>
     </HydrationBoundary>
   )
 }
 
-export default CoursePage

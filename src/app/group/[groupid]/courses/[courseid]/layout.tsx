@@ -5,26 +5,27 @@ import { CreateCourseModule } from '../_components/create-module'
 import CourseList from '../_components/module-list'
 
 type CourseLayoutProps = {
-    params : {
+    params : Promise<{
         courseid: string
         groupid: string
-    },
+    }>,
     children: React.ReactNode
 }
+//    params: Promise<{sectionid : string; groupid: string}>
 
-const CourseLayout = async ({params, children} : CourseLayoutProps) => {
+export default async function CourseLayout ({params, children} : CourseLayoutProps) {
     const client = new QueryClient()
-
+   const {courseid, groupid} = await params;
     await client.prefetchQuery({
         queryKey: ["course-modules"],
-        queryFn: () => onGetCourseModules(params.courseid)
+        queryFn: () => onGetCourseModules(courseid)
     })
   return (
    <HydrationBoundary state={dehydrate(client)}>
   <div className='grid grid-cols-1 h-full lg:grid-cols-4 overflow-hidden'>
 <div className='bg-themeBlack p-5 overflow-y-auto'>
-    <CreateCourseModule groupid={params.groupid} courseId={params.courseid}/>
-    <CourseList groupid={params.groupid} courseId={params.courseid}/>
+    <CreateCourseModule groupid={groupid} courseId={courseid}/>
+    <CourseList groupid={groupid} courseId={courseid}/>
 </div>
 <div className='lg:col-span-3 max-h-full h-full pb-10 overflow-y-auto bg-[#101011]/90'>
 {children}
@@ -34,4 +35,3 @@ const CourseLayout = async ({params, children} : CourseLayoutProps) => {
   )
 }
 
-export default CourseLayout
